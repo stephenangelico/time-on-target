@@ -28,7 +28,7 @@ GPIO.setwarnings(False)
 GPIO.setup(lcd_rw, GPIO.OUT, initial=GPIO.LOW)
 #lcd_backlight = digitalio.DigitalInOut(board.D21) # Works but doesn't supply enough power
 lcd = character_lcd.Character_LCD_Mono(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows)
-lcd.backlight = True
+#lcd.backlight = True
 lcd.blink = False
 
 lcd.message("Hello world!")
