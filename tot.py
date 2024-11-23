@@ -7,7 +7,7 @@
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
 
-import RPi.GPIO
+import RPi.GPIO as GPIO
 import board
 import digitalio
 import adafruit_character_lcd.character_lcd as character_lcd
