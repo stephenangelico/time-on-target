@@ -33,5 +33,5 @@ lcd.blink = False
 
 lcd.message("Hello world!")
 time.sleep(3)
-lcd.clear
+lcd.clear()
 GPIO.cleanup()
