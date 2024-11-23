@@ -1,4 +1,3 @@
 RPi.GPIO
 board
-digitalio
 adafruit-circuitpython-charlcd
