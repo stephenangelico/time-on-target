@@ -31,7 +31,8 @@ lcd = character_lcd.Character_LCD_Mono(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, l
 #lcd.backlight = True
 lcd.blink = False
 
-lcd.message("Hello world!")
-time.sleep(3)
+lcd.clear()
+lcd.message = "Hello world!"
+time.sleep(30)
 lcd.clear()
 GPIO.cleanup()
