@@ -1,9 +1,8 @@
 # Time On Target (main)
 # TODO:
-# First, test LCD
-# Switch backlight input to GPIO12 (PWM)?
-# Can only use 4-bit mode with Adafruit library - any benefit in re-implementing in 8-bit?
-# Then get a working desk clock
+# Use software PWM to set brightness level for backlight
+# Wire PWM pin to small capacitor and NPN transistor to switch 3.3V GPIO to 5V rail
+# Get a working desk clock
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
 
