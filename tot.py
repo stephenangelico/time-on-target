@@ -1,6 +1,7 @@
 # Time On Target (main)
 # TODO:
 # Get a working desk clock
+# Implement modeswitch/interrupt for a display mode which is regularly updating (such as a clock)
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
 
@@ -38,9 +39,13 @@ def init_lcd():
 	lcd.clear()
 
 def test_message():
-	lcd.message = "Hello world!"
 	pwm.ChangeDutyCycle(100)
-	time.sleep(10)
+	t = 0
+	while t <= 20:
+		lcd.message = time.strftime("%H:%M:%S")
+		sleep(0.5)
+		t += 1
+	#time.sleep(10)
 
 def cleanup():
 	lcd.clear()
