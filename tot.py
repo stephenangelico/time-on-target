@@ -33,6 +33,7 @@ def init_lcd():
 	#global pwm
 	#pwm = GPIO.PWM(lcd_backlight, pwm_freq)
 	#pwm.start(0)
+	global lcd
 	lcd = character_lcd.Character_LCD_RGB(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows, lcd_red, lcd_green, lcd_blue)
 	lcd.blink = False
 	lcd.clear()
