@@ -1,7 +1,5 @@
 # Time On Target (main)
 # TODO:
-# Use software PWM to set brightness level for backlight
-# Wire PWM pin to small capacitor and NPN transistor to switch 3.3V GPIO to 5V rail
 # Get a working desk clock
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
