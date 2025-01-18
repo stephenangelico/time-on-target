@@ -43,7 +43,7 @@ def test_message():
 	t = 0
 	while t <= 20:
 		lcd.message = time.strftime("%H:%M:%S")
-		sleep(0.5)
+		time.sleep(0.5)
 		t += 1
 	#time.sleep(10)
 
