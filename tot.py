@@ -20,8 +20,8 @@ def init_lcd():
 	lcd_d6 = digitalio.DigitalInOut(board.D23)
 	lcd_d7 = digitalio.DigitalInOut(board.D24)
 	lcd_red = pwmio.PWMOut(board.D3) # The only one that matters - green and blue are dummies
-	lcd_green = digitalio.DigitalInOut(board.D14)
-	lcd_blue = digitalio.DigitalInOut(board.D15)
+	lcd_green = pwmio.PWMOut(board.D14)
+	lcd_blue = pwmio.PWMOut(board.D15)
 	lcd_columns = 20
 	lcd_rows = 4
 	# Backlight managed manually with PWM - mono backlight control on Character_LCD_Mono is boolean
