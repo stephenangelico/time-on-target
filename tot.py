@@ -1,6 +1,6 @@
 # Time On Target (main)
 # TODO:
-# Get a working desk clock
+# Get a working desk clock (more than just a limited test)
 # Implement modeswitch/interrupt for a display mode which is regularly updating (such as a clock)
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
@@ -51,6 +51,7 @@ def cleanup():
 	lcd.clear()
 	pwm.ChangeDutyCycle(0)
 	GPIO.cleanup()
+	# TODO: On exit, with PWM gone, the backlight turns on again and the characters fill with blocks. Can we keep the backlight off on exit?
 
 if __name__ == "__main__":
 	try:
