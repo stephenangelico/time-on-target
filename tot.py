@@ -12,40 +12,39 @@ import adafruit_character_lcd.character_lcd as character_lcd
 import time
 
 def init_lcd():
-	lcd_rs = digitalio.DigitalInOut(board.D2)
+	lcd_rs = digitalio.DigitalInOut(board.D2) # Physical pin 3
 	# LCD RW (pin 5) is pulled to ground as we never need to read from the display
-	lcd_en = digitalio.DigitalInOut(board.D4)
-	lcd_d4 = digitalio.DigitalInOut(board.D27)
-	lcd_d5 = digitalio.DigitalInOut(board.D22)
-	lcd_d6 = digitalio.DigitalInOut(board.D23)
-	lcd_d7 = digitalio.DigitalInOut(board.D24)
-	lcd_red = pwmio.PWMOut(board.D3) # The only one that matters - green and blue are dummies
-	lcd_green = pwmio.PWMOut(board.D14)
-	lcd_blue = pwmio.PWMOut(board.D15)
+	lcd_en = digitalio.DigitalInOut(board.D4) # Physical pin 7
+	lcd_d4 = digitalio.DigitalInOut(board.D27) # Physical pin 13
+	lcd_d5 = digitalio.DigitalInOut(board.D22) # Physical pin 15
+	lcd_d6 = digitalio.DigitalInOut(board.D23) # Physical pin 16
+	lcd_d7 = digitalio.DigitalInOut(board.D24) # Physical pin 18
 	lcd_columns = 20
 	lcd_rows = 4
-	# Backlight managed manually with PWM - mono backlight control on Character_LCD_Mono is boolean
-	#lcd_backlight = 3
-	#pwm_freq = 50
-	#GPIO.setmode(GPIO.BCM)
-	#GPIO.setwarnings(False)
-	#GPIO.setup(lcd_backlight, GPIO.OUT)
-	#global pwm
-	#pwm = GPIO.PWM(lcd_backlight, pwm_freq)
-	#pwm.start(0)
+	# Backlight managed manually with PWM - mono backlight control on Character_LCD_Mono is boolean,
+	# and Character_LCD_RGB assumes inverted wiring and requires all three colours to be set on pins
+	# (even as dummies)
+	lcd_backlight = 3 # Physical pin 5
+	pwm_freq = 50
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
+	GPIO.setup(lcd_backlight, GPIO.OUT)
+	global pwm
+	pwm = GPIO.PWM(lcd_backlight, pwm_freq)
+	pwm.start(0)
 	global lcd
-	lcd = character_lcd.Character_LCD_RGB(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows, lcd_red, lcd_green, lcd_blue)
+	lcd = character_lcd.Character_LCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, lcd_columns, lcd_rows)
 	lcd.blink = False
 	lcd.clear()
 
 def test_message():
 	lcd.message = "Hello world!"
-	lcd.color = [100,0,0]
+	pwm.ChangeDutyCycle(100)
 	time.sleep(10)
 
 def cleanup():
 	lcd.clear()
-	lcd.color = [0,0,0]
+	pwm.ChangeDutyCycle(0)
 	GPIO.cleanup()
 
 if __name__ == "__main__":
