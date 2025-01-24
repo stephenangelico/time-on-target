@@ -11,6 +11,34 @@ import digitalio
 import pwmio
 import adafruit_character_lcd.character_lcd as character_lcd
 import time
+import asyncio
+
+def export(f):
+	setattr(builtins, f.__name__, f)
+	return f
+
+def report(msg):
+	print(time.time(), msg)
+
+def handle_errors(task):
+	try:
+		exc = task.exception() # Also marks that the exception has been handled
+		if exc: traceback.print_exception(type(exc), exc, exc.__traceback__)
+	except asyncio.exceptions.CancelledError:
+		pass
+
+all_tasks = [] # kinda like threading.all_threads()
+
+def task_done(task):
+	all_tasks.remove(task)
+	handle_errors(task)
+
+def spawn(awaitable):
+	"""Spawn an awaitable as a stand-alone task"""
+	task = asyncio.create_task(awaitable)
+	all_tasks.append(task)
+	task.add_done_callback(task_done)
+	return task
 
 def init_lcd():
 	lcd_rs = digitalio.DigitalInOut(board.D2) # Physical pin 3
@@ -53,9 +81,13 @@ def cleanup():
 	GPIO.cleanup()
 	# TODO: On exit, with PWM gone, the backlight turns on again and the characters fill with blocks. Can we keep the backlight off on exit?
 
-if __name__ == "__main__":
+async def main():
 	try:
 		init_lcd()
 		test_message()
+		await asyncio.Event()
 	finally:
 		cleanup()
+
+if __name__ == "__main__":
+	asyncio.run(main())
