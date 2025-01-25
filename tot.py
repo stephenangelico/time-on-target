@@ -4,6 +4,17 @@
 # Implement modeswitch/interrupt for a display mode which is regularly updating (such as a clock)
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
+#
+# Tasks that will run:
+# Clock ticker
+# GCal sync
+# Current/imminent alarm
+# Display renderer
+# Button listener
+#
+# Possibly have renderer which shows ticking clock (3 lines) and 1 info line
+# This would be updated by the button, switching between info lines (timeout to default ie date)
+# Cycle between date, next alarm time, next alarm name (if ringing show current alarm, cycle to button cue)
 
 import RPi.GPIO as GPIO
 import board
