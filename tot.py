@@ -40,7 +40,7 @@ def spawn(awaitable):
 	task.add_done_callback(task_done)
 	return task
 
-def init_lcd():
+async def init_lcd():
 	lcd_rs = digitalio.DigitalInOut(board.D2) # Physical pin 3
 	# LCD RW (pin 5) is pulled to ground as we never need to read from the display
 	lcd_en = digitalio.DigitalInOut(board.D4) # Physical pin 7
@@ -66,16 +66,18 @@ def init_lcd():
 	lcd.blink = False
 	lcd.clear()
 
-def test_message():
+async def test_message():
 	pwm.ChangeDutyCycle(100)
-	t = 0
-	while t <= 20:
+	while True:
 		lcd.message = time.strftime("%H:%M:%S")
-		time.sleep(0.5)
-		t += 1
-	#time.sleep(10)
+		await asyncio.sleep(0.5)
 
-def cleanup():
+async def console_time():
+	while True:
+		print(time.strftime("%H:%M:%S"), end="\r")
+		await asyncio.sleep(0.5)
+
+async def cleanup():
 	lcd.clear()
 	pwm.ChangeDutyCycle(0)
 	GPIO.cleanup()
@@ -83,11 +85,15 @@ def cleanup():
 
 async def main():
 	try:
-		init_lcd()
-		test_message()
-		await asyncio.Event()
+		await init_lcd()
+		spawn(test_message())
+		spawn(console_time())
+		await asyncio.Future()
 	finally:
-		cleanup()
+		await cleanup()
 
 if __name__ == "__main__":
-	asyncio.run(main())
+	try:
+		asyncio.run(main())
+	except KeyboardInterrupt:
+		pass
