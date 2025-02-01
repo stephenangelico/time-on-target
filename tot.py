@@ -24,6 +24,20 @@ import adafruit_character_lcd.character_lcd as character_lcd
 import time
 import asyncio
 
+FONT = {
+	"0": ("000", "0 0", "000"),
+	"1": (" 1 ", " 1 ", " 1 "),
+	"2": ("22 ", " 2 ", "222"),
+	"3": ("333", " 33", "333"),
+	"4": ("4 4", "444", " 4 "),
+	"5": (" 55", " 5 ", "555"),
+	"6": (" 66", "6  ", "666"),
+	"7": ("777", " 7 ", "7  "),
+	"8": ("888", " 8 ", "888"),
+	"9": (" 99", "99 ", "  9"),
+	":": ("   ", " \xA5 ", " \xA5 "),
+}
+
 def export(f):
 	setattr(builtins, f.__name__, f)
 	return f
@@ -80,8 +94,23 @@ async def init_lcd():
 async def test_message():
 	pwm.ChangeDutyCycle(100)
 	while True:
-		lcd.message = time.strftime("%H:%M:%S")
+		lcd_render("date")
 		await asyncio.sleep(0.5)
+
+def lcd_render(mode):
+	"""Render the time and 4th line and send to LCD"""
+	cur_time = time.strftime("%H:%M:%S")
+	# Font gives each digit in a tuple of three 3-character strings.
+	# Renderer builds each line by taking appropriate line of each digit in cur_time
+	time_3line = "\n".join(
+		FONT[cur_time[0]][line] + " " + FONT[cur_time[1]][line] +
+		FONT[":"][line] +
+		FONT[cur_time[3]][line] + " " + FONT[cur_time[4]][line]
+		for line in range(3)
+	) + cur_time[6:] + "\n"
+	if mode == "date":
+		fourth_line = time.strftime("%a, %d %b %Y")
+	lcd.message = time_3line + fourth_line
 
 async def console_time():
 	while True:
