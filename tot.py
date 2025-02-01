@@ -107,7 +107,7 @@ def lcd_render(mode):
 		FONT[":"][line] +
 		FONT[cur_time[3]][line] + " " + FONT[cur_time[4]][line]
 		for line in range(3)
-	) + cur_time[6:] + "\n"
+	) + " " + cur_time[6:] + "\n"
 	if mode == "date":
 		fourth_line = time.strftime("%a, %d %b %Y")
 	lcd.message = time_3line + fourth_line
