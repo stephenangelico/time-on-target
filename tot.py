@@ -38,6 +38,10 @@ FONT = {
 	":": ("   ", " \xA5 ", " \xA5 "),
 }
 
+marquee_idx = 0
+next_time = "00:00 (00h)"
+next_name = "Very long alarm name"
+
 def export(f):
 	setattr(builtins, f.__name__, f)
 	return f
@@ -108,8 +112,21 @@ def lcd_render(mode):
 		FONT[cur_time[3]][line] + " " + FONT[cur_time[4]][line]
 		for line in range(3)
 	) + " " + cur_time[6:] + "\n"
+	global marquee_idx
 	if mode == "date":
 		fourth_line = time.strftime("%a, %d %b %Y")
+	elif mode == "next_time":
+		fourth_line = "Next: " + next_time
+	elif mode == "next_name":
+		fourth_line = "Next: " + next_name
+	elif mode == "cur_name":
+		fourth_line = next_name
+	if len(fourth_line) <= 20:
+		fourth_line = fourth_line.center(20)
+	else:
+		fourth_line += " "
+		marquee_idx += 1 # TODO: reset on button press
+		fourth_line = (fourth_line * 2)[marquee_idx % len(fourth_line):][:20]
 	lcd.message = time_3line + fourth_line
 
 async def console_time():
