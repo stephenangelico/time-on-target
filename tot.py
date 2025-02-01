@@ -121,12 +121,17 @@ def lcd_render(mode):
 		fourth_line = "Next: " + next_name
 	elif mode == "cur_name":
 		fourth_line = next_name
+	# TODO: Missed alarm mode if there is one, and/or a last alarm mode?
 	if len(fourth_line) <= 20:
 		fourth_line = fourth_line.center(20)
 	else:
 		fourth_line += " "
 		marquee_idx += 1 # TODO: reset on button press
 		fourth_line = (fourth_line * 2)[marquee_idx % len(fourth_line):][:20]
+		# TODO: Marquee only name
+		# TODO: Pause marquee (~2sec) after full loop
+		# TODO: Marquee faster
+		# Possibly see-saw marquee instead of loop?
 	lcd.message = time_3line + fourth_line
 
 async def console_time():
