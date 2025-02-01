@@ -1,20 +1,18 @@
 # Time On Target (main)
 # TODO:
-# Get a working desk clock (more than just a limited test)
-# Implement modeswitch/interrupt for a display mode which is regularly updating (such as a clock)
 # Eventually buttons will be needed - how many and what for?
 # Pull in Google Calendar integration from Rosuav/LetMeKnow (reimplement - old code with Py2 compat)
 #
 # Tasks that will run:
-# Clock ticker
 # GCal sync
 # Current/imminent alarm
-# Display renderer
+# Display renderer - done
 # Button listener
 #
-# Possibly have renderer which shows ticking clock (3 lines) and 1 info line
-# This would be updated by the button, switching between info lines (timeout to default ie date)
-# Cycle between date, next alarm time, next alarm name (if ringing show current alarm, cycle to button cue)
+# Renderer draws ticking clock (3 lines) and 1 info line updated by the button,
+# switching between info modes (timeout to default ie date)
+# Cycle between date, next alarm time, next alarm name and others as available
+# If alarm is ringing, show current alarm name, cycle to "Hold button to stop")
 
 import RPi.GPIO as GPIO
 import board
@@ -122,6 +120,7 @@ def lcd_render(mode):
 	elif mode == "cur_name":
 		fourth_line = next_name
 	# TODO: Missed alarm mode if there is one, and/or a last alarm mode?
+	# TODO: Refactor so modes are data (which may or may not be available)
 	if len(fourth_line) <= 20:
 		fourth_line = fourth_line.center(20)
 	else:
