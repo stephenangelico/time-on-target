@@ -20,6 +20,7 @@ import digitalio
 import pwmio
 import adafruit_character_lcd.character_lcd as character_lcd
 import time
+import traceback
 import queue
 import threading
 import asyncio
