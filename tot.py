@@ -20,7 +20,12 @@ import digitalio
 import pwmio
 import adafruit_character_lcd.character_lcd as character_lcd
 import time
+import queue
+import threading
 import asyncio
+# Yes, this uses both threading and asyncio, because AdafruitCharLCD uses synchronous time.sleep internally.
+
+lcd_mgr = queue.Queue()
 
 FONT = {
 	"0": ("000", "0 0", "000"),
@@ -67,7 +72,7 @@ def spawn(awaitable):
 	task.add_done_callback(task_done)
 	return task
 
-async def init_lcd():
+def init_lcd():
 	lcd_rs = digitalio.DigitalInOut(board.D2) # Physical pin 3
 	# LCD RW (pin 5) is pulled to ground as we never need to read from the display
 	lcd_en = digitalio.DigitalInOut(board.D4) # Physical pin 7
@@ -94,12 +99,12 @@ async def init_lcd():
 	lcd.clear()
 
 async def test_message():
-	pwm.ChangeDutyCycle(100)
+	lcd_mgr.put(["duty_cycle", 100])
 	while True:
-		lcd_render("date")
+		line_render("date")
 		await asyncio.sleep(0.5)
 
-def lcd_render(mode):
+def line_render(mode):
 	"""Render the time and 4th line and send to LCD"""
 	cur_time = time.strftime("%H:%M:%S")
 	# Font gives each digit in a tuple of three 3-character strings.
@@ -131,27 +136,37 @@ def lcd_render(mode):
 		# TODO: Pause marquee (~2sec) after full loop
 		# TODO: Marquee faster
 		# Possibly see-saw marquee instead of loop?
-	lcd.message = time_3line + fourth_line
+	lcd_mgr.put(["message", time_3line + fourth_line])
 
 async def console_time():
 	while True:
 		print(time.strftime("%H:%M:%S"), end="\r")
 		await asyncio.sleep(0.5)
 
-async def cleanup():
+def cleanup():
 	lcd.clear()
 	pwm.ChangeDutyCycle(0)
 	GPIO.cleanup()
 	# TODO: On exit, with PWM gone, the backlight turns on again and the characters fill with blocks. Can we keep the backlight off on exit?
 
-async def main():
+def lcd_handler():
 	try:
-		await init_lcd()
+		init_lcd()
+		while (msg := lcd_mgr.get()) != ("shutdown",):
+			print("LCD HANDLER", msg)
+	finally:
+		cleanup()
+
+async def main():
+	lcd_thread = threading.Thread(target=lcd_handler)
+	lcd_thread.start()
+	try:
 		spawn(test_message())
-		spawn(console_time())
+		#spawn(console_time())
 		await asyncio.Future()
 	finally:
-		await cleanup()
+		lcd_mgr.put(("shutdown",))
+		lcd_thread.join()
 
 if __name__ == "__main__":
 	try:
