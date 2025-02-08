@@ -153,7 +153,10 @@ def lcd_handler():
 	try:
 		init_lcd()
 		while (msg := lcd_mgr.get()) != ("shutdown",):
-			print("LCD HANDLER", msg)
+			match msg:
+				case ["message", msg]: lcd.message = msg
+				case ["duty_cycle", duty]: pwm.ChangeDutyCycle(duty)
+				case unk: print("Unknown message", unk)
 	finally:
 		cleanup()
 
