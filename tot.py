@@ -74,6 +74,8 @@ def spawn(awaitable):
 	return task
 
 def init_lcd():
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
 	lcd_rs = digitalio.DigitalInOut(board.D2) # Physical pin 3
 	# LCD RW (pin 5) is pulled to ground as we never need to read from the display
 	lcd_en = digitalio.DigitalInOut(board.D4) # Physical pin 7
@@ -88,8 +90,6 @@ def init_lcd():
 	# (even as dummies)
 	lcd_backlight = 3 # Physical pin 5
 	pwm_freq = 50
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setwarnings(False)
 	GPIO.setup(lcd_backlight, GPIO.OUT)
 	global pwm
 	pwm = GPIO.PWM(lcd_backlight, pwm_freq)
@@ -147,6 +147,8 @@ async def console_time():
 def cleanup():
 	lcd.clear()
 	pwm.ChangeDutyCycle(0)
+	global pwm
+	pwm = None
 	GPIO.cleanup()
 	# TODO: On exit, with PWM gone, the backlight turns on again and the characters fill with blocks. Can we keep the backlight off on exit?
 
