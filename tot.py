@@ -146,8 +146,8 @@ async def console_time():
 
 def cleanup():
 	lcd.clear()
-	pwm.ChangeDutyCycle(0)
 	global pwm
+	pwm.ChangeDutyCycle(0)
 	pwm = None
 	GPIO.cleanup()
 	# TODO: On exit, with PWM gone, the backlight turns on again and the characters fill with blocks. Can we keep the backlight off on exit?
