@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module fritzingVersion="0.9.3b" moduleId="UprightResistorModuleID">
+    <version>4</version>
+    <title>Resistor upright</title>
+    <label>R</label>
+    <date>Sa Mrz 18 2017</date>
+    <author>steelgoose/vanepp</author>
+    <tags>
+        <tag>Resistor</tag>
+        <tag>basic resistor</tag>
+        <tag>100 mil</tag>
+        <tag>upright resistor</tag>
+        <tag>fritzing core</tag>
+    </tags>
+    <properties>
+      <property name="Resistance" showInLabel="yes">100</property>
+      <property name="family">resistor</property>
+      <property name="power" showInLabel="yes"></property>
+      <property name="Pin Spacing">100 mil (stand-up right)</property>
+      <property name="package">THT</property>      
+      <property name="bands">upright 4</property>
+      <property name="tolerance">&#177;5%</property>
+      <property name="variant">upright_resistor</property>
+    </properties>
+    <taxonomy>discreteParts.resistor.100</taxonomy>
+    <description>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">&#xd;&#xd;&#xd;
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">&#xd;&#xd;&#xd;
+p, li { white-space: pre-wrap; }&#xd;&#xd;&#xd;
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">&#xd;&#xd;&#xd;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">A generic upright standing resistor (0.25W)&lt;/p>&lt;/body>&lt;/html></description>
+    <spice><line>R{instanceTitle} {net connector0} {net connector1} {resistance}</line></spice>
+    <views>
+        <iconView>
+            <layers image="icon/resistor_up_icon.svg" >   
+                <layer layerId="icon" />
+            </layers>
+        </iconView>
+        <breadboardView>
+            <layers image="breadboard/resistor_up_breadboard.svg">
+                <layer layerId="breadboard" />
+            </layers>
+        </breadboardView>
+        <schematicView>
+            <layers image="schematic/resistor_up_schematic.svg">
+                <layer layerId="schematic" />
+            </layers>
+        </schematicView>
+        <pcbView>
+            <layers image="pcb/resistor_up_pcb.svg">
+                <layer layerId="copper0" />
+                <layer layerId="copper1" />
+                <layer layerId="keepout" />
+                <layer layerId="soldermask" />
+                <layer layerId="silkscreen" />
+                <layer layerId="outline" />
+            </layers>
+        </pcbView>
+    </views>
+    <connectors>
+        <connector type="male" id="connector0" name="Pin 0">
+            <description>Pin0</description>
+            <views>
+                <breadboardView>
+                    <p svgId="connector0pin" layer="breadboard"  legId="connector0leg"/>
+                </breadboardView>
+                <schematicView>
+                    <p svgId="connector0pin" layer="schematic"  terminalId="connector0terminal" />
+                </schematicView>
+                <pcbView>
+                    <p svgId="connector0pin" layer="copper0" />
+                    <p svgId="connector0pin" layer="copper1" />
+                </pcbView>
+            </views>
+        </connector>
+        <connector type="male" id="connector1" name="Pin 1">
+            <description>Pin 1</description>
+            <views>
+                <breadboardView>
+                    <p svgId="connector1pin" layer="breadboard"  legId="connector1leg"/>
+                </breadboardView>
+                <schematicView>
+                    <p svgId="connector1pin" layer="schematic" terminalId="connector1terminal" />
+                </schematicView>
+                <pcbView>
+                    <p svgId="connector1pin" layer="copper0" />
+                    <p svgId="connector1pin" layer="copper1" />
+                </pcbView>
+            </views>
+        </connector>
+    </connectors>
+</module>
