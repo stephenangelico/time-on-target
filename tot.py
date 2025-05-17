@@ -7,7 +7,7 @@
 # GCal sync
 # Current/imminent alarm
 # Display renderer - done
-# Button listener
+# Button listener (note: use GPIO.PUD_UP)
 #
 # Renderer draws ticking clock (3 lines) and 1 info line updated by the button,
 # switching between info modes (timeout to default ie date)
