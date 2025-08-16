@@ -24,6 +24,10 @@ LCD pins 15-18 to Pi pins R8-14 (GPIO 14,15,18, GND) - LCD Control 2
 LCD pins 19-22 to board JST4 (PWMOut, R, G, B) - LCD Backlight
 Board JST1 to Pi pins R4-6 (5V, GND) - Board Power
 Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
-(Custom wires designed on DirtyPCBs)
 
 TODO: explain PWM booster circuit
+
+Next stream: soldering
+De-solder Red, Brown -> LCD power JST
+Swap order of Red and Brown and resolder
+Fix/replace Pi power JST plug
