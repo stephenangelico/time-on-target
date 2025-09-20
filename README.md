@@ -27,7 +27,18 @@ Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
 
 TODO: explain PWM booster circuit
 
-Next stream: soldering
-De-solder Red, Brown -> LCD power JST
-Swap order of Red and Brown and resolder
-Fix/replace Pi power JST plug
+Next stream: Fritzing part creation
+Update metadata in stephena-jst3
+Run FritzingCheckPart.py on stephena-jst2 and stephena-jst4
+Then edit both first in Inkscape to set layer order and labels
+Then in SciTE to fix object IDs
+Once parts can be imported, ensure pin assignment is correct
+Save parts and bin
+Explore packaging and contributing parts upstream
+Swap JSTs on board for correct versions (inc button non-connector)
+Abolish old breadboard and move all wiring of LCD to stripboard
+Set wiring of LCD power JST to include Vout (LCD pin 18)
+
+Future stream: soldering
+De-solder LCD power JST and replace with 4-pin (should fit right next to PWM JST)
+De-solder trimpot wires and redo according to Fritzing diagram
