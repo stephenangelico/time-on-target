@@ -27,24 +27,10 @@ Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
 
 TODO: explain PWM booster circuit
 
-Next stream: Fritzing part creation
-Take a look at all three breadboard views - where should the connectors be?
-FritzingCheckPart.py expects terminals to be rectangles - can we use the
-rectangles in the centre of each pin?
-These are in deeply nested groups which serve an unclear purpose.
-Also, the objects currently labelled as the pins and terminals are rendered
-underneath the backing while in the same group. This doesn't make sense!
-If there is to be a group per pin, keep all of parts (paths and rectangles)
-together in it.
-Clean up the heavily nested groups and see if behaviour in Fritzing is affected.
-
-Old notes:
-Update metadata in stephena-jst3 - DONE
-Run FritzingCheckPart.py on stephena-jst2 and stephena-jst4 - DONE
-Then edit both first in Inkscape to set layer order and labels - DONE for 2
-Then in SciTE to fix object IDs - DONE for 2
-Once parts can be imported, ensure pin assignment is correct - DONE for 2
-Save parts and bin - DONE for 2
+Next stream:
+Investigate errors in JST4 schematic, then bundle and import
+Once parts can be imported, ensure pin assignment is correct for JST4
+Save parts and bin
 Explore packaging and contributing parts upstream - may need to clean up IDs
 Swap JSTs on board for correct versions (inc button non-connector)
 Abolish old breadboard and move all wiring of LCD to stripboard
