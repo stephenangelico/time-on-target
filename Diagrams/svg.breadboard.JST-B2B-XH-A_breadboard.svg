@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (https://fritzing.org/) -->
+  <svg
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  height="0.23624988in"
+  viewBox="0 0 21.174233 17.009994"
+  width="0.29408631in"
+  id="svg200"
+  x="0in"
+  version="1.2"
+  y="0in"
+  gorn="0"
+  sodipodi:docname="svg.breadboard.JST-B2B-XH-A_breadboard.svg"
+  inkscape:version="1.2.2 (b0a8486541, 2022-12-01)">
+  <sodipodi:namedview
+    id="namedview65"
+    pagecolor="#ffffff"
+    bordercolor="#000000"
+    borderopacity="0.25"
+    inkscape:showpageshadow="2"
+    inkscape:pageopacity="0.0"
+    inkscape:pagecheckerboard="0"
+    inkscape:deskcolor="#d1d1d1"
+    inkscape:document-units="in"
+    showgrid="false"
+    inkscape:zoom="32"
+    inkscape:cx="15.703125"
+    inkscape:cy="13.296875"
+    inkscape:window-width="2560"
+    inkscape:window-height="1362"
+    inkscape:window-x="0"
+    inkscape:window-y="27"
+    inkscape:window-maximized="1"
+    inkscape:current-layer="breadboard"
+  />
+  <desc
+    id="desc2">
+    <referenceFile>JST-B2B-XH-A_breadboard.svg</referenceFile>
+  </desc>
+  <defs
+    id="defs204"
+  />
+  <g
+    id="breadboard"
+    gorn="0.2.0.0.0.0.0.0"
+    transform="translate(2e-4,3e-4)">
+    <g
+      id="g149"
+      gorn="0.2.0.0.0.0.0.0.0.0.0.0.0"
+      transform="translate(19.3808,25.6877)">
+      <rect
+        height="4.402"
+        width="1.563"
+        id="rect145"
+        x="-15.129"
+        y="-25.684999"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.0.0"
+        fill="#b9b9b9"
+      />
+      <rect
+        height="4.402"
+        width="1.563"
+        id="rect147"
+        x="-4.1082015"
+        y="-25.684999"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.0.1"
+        fill="#b9b9b9"
+      />
+      <path
+        d="M -4.1096172,-24.746 H -13.566 v 3.463 h 9.4563828 z"
+        id="path4286_4_"
+        stroke-width="0.756058"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.1"
+        fill="#b9b9b9"
+      />
+      <path
+        d="m -1.7497753,-25.688 h 3.543 V -8.68 h -3.543 z"
+        id="path4286_2_"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.3"
+        fill="#b9b9b9"
+      />
+      <path
+        d="m -19.381,-25.686 h 3.401 v 17.008 h -3.401 z"
+        id="path4286_3_"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.4"
+        fill="#b9b9b9"
+      />
+    </g>
+    <g
+      id="g304">
+      <path
+        d="M -0.75951146,-21.811 H -16.917 v 9.259 h 16.15748854 z"
+        id="path4286"
+        stroke-width="0.833742"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.9"
+        fill="#e2e2e2"
+        transform="translate(19.3808,25.6877)"
+      />
+      <path
+        d="M -1.1929135,-21.283 H -16.483 v 8.203 h 15.2900865 z"
+        id="path4286_1_"
+        stroke-width="0.826635"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.10"
+        fill="#d0d0d0"
+        transform="translate(19.3808,25.6877)"
+      />
+      <path
+        d="M -0.75965738,-21.283 H -2.2146574 v 8.203 h 1.45500002 z"
+        id="path4286_5_"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.11"
+        fill="#efefef"
+        transform="translate(19.3808,25.6877)"
+      />
+      <path
+        d="m -15.462,-21.285 h -1.455 v 8.203 h 1.455 z"
+        id="path4286_6_"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.12"
+        fill="#efefef"
+        transform="translate(19.3808,25.6877)"
+      />
+    </g>
+    <g
+      id="connector0pin"
+      transform="translate(19.3808,25.6877)">
+      <rect
+        x="-13.952"
+        y="-18.798"
+        width="3.231"
+        height="3.231"
+        rx="0.283"
+        id="connector0terminal"
+        fill="#9A916C"
+      />
+      <path
+        d="m 92.234,86.948 h 1.049 c 0.156,0 0.283,0.126 0.283,0.283 v 1.049 c 0,0.157 -0.127,0.284 -0.283,0.284 h -1.049 c -0.157,0 -0.284,-0.127 -0.284,-0.284 v -1.049 c 0,-0.156 0.127,-0.283 0.284,-0.283 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="rect4154"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.13.0.0.0.0"
+        fill="#8c8663"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 94.231,89.231 -0.808,-0.809 c -0.051,0.051 -0.063,0.143 -0.141,0.143 h -1.048 c -0.079,0 -0.091,-0.092 -0.143,-0.143 l -0.808,0.809 c 0.052,0.051 0.063,0.142 0.142,0.142 h 2.664 c 0.081,-0.001 0.091,-0.091 0.142,-0.142 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path4217"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.13.0.0.0.1"
+        fill="#5e5b43"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 93.425,87.09 c 0.051,0.051 0.141,0.063 0.141,0.142 v 1.048 c 0,0.079 -0.091,0.092 -0.143,0.143 l 0.808,0.809 c 0.052,-0.052 0.143,-0.063 0.143,-0.141 v -2.667 c 0,-0.078 -0.091,-0.089 -0.143,-0.141 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path4222"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.13.0.0.0.2"
+        fill="#80795b"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 91.285,86.283 c -0.052,0.051 -0.143,0.063 -0.143,0.141 v 2.667 c 0,0.078 0.091,0.089 0.143,0.141 l 0.808,-0.809 C 92.041,88.372 91.95,88.36 91.95,88.28 v -1.048 c 0,-0.079 0.092,-0.09 0.143,-0.141 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path4220"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.13.0.0.0.3"
+        fill="#9a916c"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 91.285,86.283 0.808,0.808 c 0.052,-0.052 0.063,-0.142 0.143,-0.142 h 1.048 c 0.079,0 0.092,0.089 0.143,0.141 l 0.806,-0.807 c -0.051,-0.051 -0.062,-0.142 -0.141,-0.142 h -2.664 c -0.08,0 -0.091,0.091 -0.143,0.142 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="rect4159"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.13.0.0.0.4"
+        fill="#b8af82"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+    </g>
+    <g
+      id="connector1pin"
+      transform="translate(19.3808,25.6877)">
+      <rect
+        x="-6.865"
+        y="-18.798"
+        width="3.231"
+        height="3.231"
+        rx="0.283"
+        id="connector1terminal"
+        fill="#9A916C"
+      />
+      <path
+        d="m 99.321,86.948 h 1.049 c 0.156,0 0.283,0.126 0.283,0.283 v 1.049 c 0,0.157 -0.127,0.284 -0.283,0.284 h -1.049 c -0.156,0 -0.283,-0.127 -0.283,-0.284 v -1.049 c 0,-0.156 0.127,-0.283 0.283,-0.283 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="rect5450"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.14.0.0.0.0"
+        fill="#8c8663"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 101.319,89.231 -0.808,-0.809 c -0.052,0.051 -0.063,0.143 -0.141,0.143 h -1.049 c -0.078,0 -0.091,-0.092 -0.143,-0.143 l -0.808,0.809 c 0.052,0.051 0.063,0.142 0.143,0.142 h 2.664 c 0.08,-0.001 0.092,-0.091 0.142,-0.142 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path5452"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.14.0.0.0.1"
+        fill="#5e5b43"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 100.513,87.09 c 0.052,0.051 0.141,0.063 0.141,0.142 v 1.048 c 0,0.079 -0.091,0.092 -0.142,0.143 l 0.808,0.809 c 0.051,-0.052 0.142,-0.063 0.142,-0.141 v -2.667 c 0,-0.078 -0.091,-0.089 -0.142,-0.141 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path5454"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.14.0.0.0.2"
+        fill="#80795b"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 98.372,86.283 c -0.051,0.051 -0.142,0.063 -0.142,0.141 v 2.667 c 0,0.078 0.091,0.089 0.142,0.141 L 99.18,88.423 C 99.129,88.372 99.038,88.36 99.038,88.28 v -1.048 c 0,-0.079 0.091,-0.09 0.142,-0.141 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path5456"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.14.0.0.0.3"
+        fill="#9a916c"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+      <path
+        d="m 98.372,86.283 0.808,0.808 c 0.052,-0.052 0.063,-0.142 0.143,-0.142 h 1.049 c 0.078,0 0.091,0.089 0.142,0.141 l 0.807,-0.807 c -0.051,-0.051 -0.063,-0.142 -0.141,-0.142 h -2.664 c -0.08,0 -0.092,0.091 -0.144,0.142 z"
+        enable-background="new    "
+        opacity="0.95"
+        id="path5458"
+        gorn="0.2.0.0.0.0.0.0.0.0.0.0.14.0.0.0.4"
+        fill="#b8af82"
+        transform="translate(-105.095,-104.939)"
+        display="inline"
+      />
+    </g>
+  </g>
+</svg>

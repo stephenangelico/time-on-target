@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<module referenceFile="JST-B2B-XH-A.fzp" moduleId="JST-B2B-XH-A" fritzingVersion="0.9.3b">
+  <version>4</version>
+  <author>Stephen Angelico</author>
+  <title>JST-B2B-XH-A</title>
+  <label>J</label>
+  <date>Sat Sept 27 2025</date>
+  <tags>
+    <tag>xhp</tag>
+    <tag>b2b-xh-a</tag>
+    <tag>jst</tag>
+  </tags>
+  <properties>
+    <property name="variant">2 pin wire connector</property>
+    <property name="family">jst connector</property>
+    <property name="part number">B2B-XH-A</property>
+    <property name="mpn"/>
+    <property name="package">THT</property>
+    <property name="Pins">2</property>
+    <property name="hole size"/>
+    <property name="mn"/>
+    <property name="Form">♂ (male)</property>
+    <property name="layer"/>
+    <property name="Pin Spacing">0.98in (2.5mm)</property>
+  </properties>
+  <description/>
+  <views>
+    <iconView>
+      <layers image="icon/JST-B2B-XH-A_icon.svg">
+        <layer layerId="icon"/>
+      </layers>
+    </iconView>
+    <breadboardView>
+      <layers image="breadboard/JST-B2B-XH-A_breadboard.svg">
+        <layer layerId="breadboard"/>
+      </layers>
+    </breadboardView>
+    <schematicView fliphorizontal="true">
+      <layers image="schematic/JST-B2B-XH-A_schematic.svg">
+        <layer layerId="schematic"/>
+      </layers>
+    </schematicView>
+    <pcbView>
+      <layers image="pcb/JST-B2B-XH-A_pcb.svg">
+        <layer layerId="copper0"/>
+        <layer layerId="silkscreen"/>
+        <layer layerId="copper1"/>
+      </layers>
+    </pcbView>
+  </views>
+  <connectors>
+    <connector name="pin1" id="connector0" type="male">
+      <description>pin 1</description>
+      <views>
+        <breadboardView>
+          <p terminalId="connector0terminal" svgId="connector0pin" layer="breadboard"/>
+        </breadboardView>
+        <schematicView>
+          <p terminalId="connector0terminal" svgId="connector0pin" layer="schematic"/>
+        </schematicView>
+        <pcbView>
+          <p svgId="connector0pin" layer="copper0"/>
+          <p svgId="connector0pin" layer="copper1"/>
+        </pcbView>
+      </views>
+    </connector>
+    <connector name="pin2" id="connector1" type="male">
+      <description>pin 2</description>
+      <views>
+        <breadboardView>
+          <p terminalId="connector1terminal" svgId="connector1pin" layer="breadboard"/>
+        </breadboardView>
+        <schematicView>
+          <p terminalId="connector1terminal" svgId="connector1pin" layer="schematic"/>
+        </schematicView>
+        <pcbView>
+          <p svgId="connector1pin" layer="copper0"/>
+          <p svgId="connector1pin" layer="copper1"/>
+        </pcbView>
+      </views>
+    </connector>
+  </connectors>
+</module>
