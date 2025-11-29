@@ -16,11 +16,10 @@ Hardware:
 Wiring:
 -------
 
-TODO: Diagram in Fritzing
-LCD pins 1-3 to board JST2 (GND, 5V, VLCD) - LCD power  ** TODO: Switch order to 5V, VLCD, GND **
+LCD pins 1-3 and 18 to board JST2 (GND, 5V, VLCD, VREF) - LCD power
 LCD pins 4-6 to Pi pins L3-7 (GPIO 2,3,4) - LCD Control 1
 LCD pins 7-14 to Pi pins R22-28, L27-33 (GPIO 25,8,7,1, 0,5,6,13) - LCD Data
-LCD pins 15-18 to Pi pins R8-14 (GPIO 14,15,18, GND) - LCD Control 2
+LCD pins 15-17 to Pi pins R8-14 (GPIO 14,15,18) - LCD Control 2
 LCD pins 19-22 to board JST4 (PWMOut, R, G, B) - LCD Backlight
 Board JST1 to Pi pins R4-6 (5V, GND) - Board Power
 Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
@@ -28,14 +27,6 @@ Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
 TODO: explain PWM booster circuit
 
 Next stream:
-Investigate errors in JST4 schematic, then bundle and import
-Once parts can be imported, ensure pin assignment is correct for JST4
-Save parts and bin
-Explore packaging and contributing parts upstream - may need to clean up IDs
-Swap JSTs on board for correct versions (inc button non-connector)
-Abolish old breadboard and move all wiring of LCD to stripboard
-Set wiring of LCD power JST to include Vout (LCD pin 18)
-
-Future stream: soldering
 De-solder LCD power JST and replace with 4-pin (should fit right next to PWM JST)
 De-solder trimpot wires and redo according to Fritzing diagram
+Re-make LCD power connector as 4-pin: LCD pins 1,2,3,18 (Vss, Vdd, Vo and Vout)
