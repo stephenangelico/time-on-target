@@ -26,7 +26,8 @@ Board JST3 to Pi pins L11-15 (GPIO 17,27,22) - Board Button, Button LED, PWM
 
 TODO: explain PWM booster circuit
 
-Next stream:
-De-solder LCD power JST and replace with 4-pin (should fit right next to PWM JST)
-De-solder trimpot wires and redo according to Fritzing diagram
-Re-make LCD power connector as 4-pin: LCD pins 1,2,3,18 (Vss, Vdd, Vo and Vout)
+Assorted notes:
+---------------
+
+Button is on GPIO17. Need to use Pi's internal pull-up resistor:
+`GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)`
