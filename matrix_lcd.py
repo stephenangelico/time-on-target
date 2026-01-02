@@ -71,6 +71,16 @@ def set_data_bits(databyte):
 		# For any pin, if state is the string "0", comparing against the string "1"
 		# will be false and thus set the pin state to low.
 
+def send_byte(databyte):
+	set_data_bits(databyte)
+	pulse_enable()
+	while "busy":
+		busy_state = status_read()
+		if not busy_state[0]:
+			break
+		else:
+			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
+
 def init():
 	# Refer to https://github.com/crystalfontz/Neotec-NT7108/blob/main/NT7108/NT7108.ino
 	# (Arduino code) for examples - written in C++ so needs to be converted
@@ -79,24 +89,17 @@ def init():
 	for pin in Pin:
 		GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 	GPIO.output(Pin.RST, 1)
+	# Loop below is same as in send_byte() except reading third state instead of first
 	while "still booting":
 		ready_state = status_read()
 		if not ready_state[2]:
 			break
 		else:
-			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
+			time.sleep(0.0001)
 	GPIO.output(Pin.RS, 0)
 	set_cs(3)
 	set_rw_write()
-	set_data_bits(0b00111111) # Display on
-	pulse_enable()
-	# TODO: Check busy?
-	set_data_bits(0b01000000) # Y addr 0
-	pulse_enable()
-	# 
-	set_data_bits(0b10111000) # X addr (page) 0
-	pulse_enable()
-	# 
-	set_data_bits(0b11000000) # Z addr (display start line)
-	pulse_enable()
-	# 
+	send_byte(0b00111111) # Display on
+	send_byte(0b01000000) # Y addr 0
+	send_byte(0b10111000) # X addr (page) 0
+	send_byte(0b11000000) # Z addr (display start line)
