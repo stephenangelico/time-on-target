@@ -65,7 +65,7 @@ def status_read():
 	return busy, display, resetting
 
 def set_data_bits(databyte):
-	for pin, state in zip(data_pins, "%08b" % databyte):
+	for pin, state in zip(data_pins, f"{databyte:08b}"):
 		GPIO.output(pin, state == "1")
 		# Byte must be given in binary. Bits are stringified and zipped with data pins
 		# For any pin, if state is the string "0", comparing against the string "1"
