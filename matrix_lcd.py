@@ -57,11 +57,11 @@ def status_read():
 	display2 = GPIO.input(Pin.DB5)
 	resetting2 = GPIO.input(Pin.DB4)
 	set_rw_write()
-	if busy1 or busy2: busy = 1; else busy = 0
-	if display1 or display2: display = 1; else display = 0
+	if busy1 or busy2: busy = 1; else: busy = 0
+	if display1 or display2: display = 1; else: display = 0
 	# display will return 0 if on, therefore if either display is off, it will be 1
 	# This will signal that one or both displays need to be turned on
-	if resetting1 or resetting2: resetting = 1; else resetting = 0
+	if resetting1 or resetting2: resetting = 1; else: resetting = 0
 	return busy, display, resetting
 
 def set_data_bits(databyte):
