@@ -40,6 +40,7 @@ def set_rw_write():
 
 def set_cs(chip):
 	# For some reason, just setting the pins low didn't work right, but setting CS1 to an input did.
+	# TODO: This STILL doesn't work as expected - further research required!
 	if chip == 0:
 		GPIO.setup(Pin.CS1, GPIO.IN)
 		GPIO.setup(Pin.CS2, GPIO.IN)
@@ -52,6 +53,7 @@ def set_cs(chip):
 	elif chip >= 3:
 		GPIO.setup(Pin.CS1, GPIO.OUT, initial=GPIO.HIGH)
 		GPIO.setup(Pin.CS2, GPIO.OUT, initial=GPIO.HIGH)
+	pulse_enable()
 
 def status_read():
 	GPIO.output(Pin.RS, 0)
