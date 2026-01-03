@@ -39,9 +39,20 @@ def set_rw_write():
 	# TODO: Merge these functions
 
 def set_cs(chip):
-	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
-	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
-	
+	# For some reason, just setting the pins low didn't work right, but setting CS1 to an input did.
+	if chip == 0:
+		GPIO.setup(Pin.CS1, GPIO.IN)
+		GPIO.setup(Pin.CS2, GPIO.IN)
+	elif chip == 1:
+		GPIO.setup(Pin.CS1, GPIO.OUT, initial=GPIO.HIGH)
+		GPIO.setup(Pin.CS2, GPIO.IN)
+	elif chip == 2:
+		GPIO.setup(Pin.CS1, GPIO.IN)
+		GPIO.setup(Pin.CS2, GPIO.OUT, initial=GPIO.HIGH)
+	elif chip >= 3:
+		GPIO.setup(Pin.CS1, GPIO.OUT, initial=GPIO.HIGH)
+		GPIO.setup(Pin.CS2, GPIO.OUT, initial=GPIO.HIGH)
+
 def status_read():
 	GPIO.output(Pin.RS, 0)
 	set_rw_read()
