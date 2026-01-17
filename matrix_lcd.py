@@ -109,6 +109,13 @@ def send_byte(databyte):
 		else:
 			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
 
+# TODO: add function for clearing everything on display. This did not quite clear a row:
+# for i in range(0,63):
+# ...     matrix_lcd.set_y(i)
+# ...     matrix_lcd.send_byte(0b00000000)
+# Left last column untouched, and for some reason between set_cs() calls only worked on 2nd chip
+
+
 def init():
 	# Refer to https://github.com/crystalfontz/Neotec-NT7108/blob/main/NT7108/NT7108.ino
 	# (Arduino code) for examples - written in C++ so needs to be converted
