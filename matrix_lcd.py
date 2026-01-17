@@ -27,16 +27,21 @@ def pulse_enable():
 	time.sleep(0.000001)
 	GPIO.output(Pin.EN, 0)
 
-def set_rw_read():
-	GPIO.output(Pin.RW, 1)
-	for pin in data_pins:
-		GPIO.setup(pin, GPIO.IN)
+def set_di(mode):
+	if mode == "data":
+		GPIO.output(Pin.RS, 0)
+	elif mode == "inst":
+		GPIO.output(Pin.RS, 1)
 
-def set_rw_write():
-	GPIO.output(Pin.RW, 0)
-	for pin in data_pins:
-		GPIO.setup(pin, GPIO.OUT)
-	# TODO: Merge these functions
+def set_rw(mode):
+	if mode == "read":
+		GPIO.output(Pin.RW, 1)
+		for pin in data_pins:
+			GPIO.setup(pin, GPIO.IN)
+	elif mode == "write":
+		GPIO.output(Pin.RW, 0)
+		for pin in data_pins:
+			GPIO.setup(pin, GPIO.OUT)
 
 def set_cs(chip):
 	# For some reason, just setting the pins low didn't work right, but setting CS1 to an input did.
@@ -56,8 +61,8 @@ def set_cs(chip):
 	pulse_enable()
 
 def status_read():
-	GPIO.output(Pin.RS, 0)
-	set_rw_read()
+	set_di("inst")
+	set_rw("read")
 	# Check each segment controller one at a time
 	set_cs(1)
 	pulse_enable()
@@ -69,7 +74,7 @@ def status_read():
 	busy2 = GPIO.input(Pin.DB7)
 	display2 = GPIO.input(Pin.DB5)
 	resetting2 = GPIO.input(Pin.DB4)
-	set_rw_write()
+	set_rw("write")
 	busy = busy1 or busy2
 	display = display1 or display2
 	# display will return 0 if on, therefore if either display is off, it will be 1
@@ -111,10 +116,10 @@ def init():
 			break
 		else:
 			time.sleep(0.0001)
-	GPIO.output(Pin.RS, 0)
+	set_di("inst")
 	set_cs(3)
-	set_rw_write()
+	set_rw("write")
 	send_byte(0b00111111) # Display on
 	send_byte(0b01000000) # Y addr 0
 	send_byte(0b10111000) # X addr (page) 0
-	send_byte(0b11000000) # Z addr (display start line)
+	send_byte(0b11000000) # Z addr (display start line) 0
