@@ -82,17 +82,14 @@ def status_read():
 	resetting = resetting1 or resetting2
 	return busy, display, resetting
 
-def set_data_bits(databyte):
+def send_byte(databyte):
+	# Send a byte of data/instruction to the display, pulse_enable and wait until no longer busy
+	# Note that you must set register select, R/W and column select BEFORE using this function.
 	for pin, state in zip(data_pins, f"{databyte:08b}"):
 		GPIO.output(pin, state == "1")
 		# Byte must be given in binary. Bits are stringified and zipped with data pins
 		# For any pin, if state is the string "0", comparing against the string "1"
 		# will be false and thus set the pin state to low.
-
-def send_byte(databyte):
-	# Send a byte of data/instruction to the display, pulse_enable and wait until no longer busy
-	# Note that you must set register select, R/W and column select BEFORE using this function.
-	set_data_bits(databyte)
 	pulse_enable()
 	while "busy":
 		busy_state = status_read()
