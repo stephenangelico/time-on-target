@@ -60,6 +60,29 @@ def set_cs(chip):
 		GPIO.setup(Pin.CS2, GPIO.OUT, initial=GPIO.HIGH)
 	pulse_enable()
 
+# Pixels are addressed in vertical segments of 8 pixels.
+
+def set_x(addr):
+	# Incrementing X address moves down the display by 8 pixels
+	if addr < 0 or addr > 7: raise ValueError("X address must be between 0 and 7 (binary 000 to 111)")
+	set_di("inst")
+	send_byte(0b10111000 + addr)
+	set_di("data")
+
+def set_y(addr):
+	# Incrementing Y address moves left by 1 pixel
+	if addr < 0 or addr > 63: raise ValueError("Y address must be between 0 and 63 (binary 000000 to 111111)")
+	set_di("inst")
+	send_byte(0b01000000 + addr)
+	set_di("data")
+
+def set_z(addr):
+	# Incrementing Z address shifts the entire display up by 1 pixel (with wraparound)
+	if addr < 0 or addr > 63: raise ValueError("Z address must be between 0 and 63 (binary 000000 to 111111)")
+	set_di("inst")
+	send_byte(0b11000000 + addr)
+	set_di("data")
+
 def status_read():
 	set_di("inst")
 	set_rw("read")
@@ -117,6 +140,6 @@ def init():
 	set_cs(3)
 	set_rw("write")
 	send_byte(0b00111111) # Display on
-	send_byte(0b01000000) # Y addr 0
-	send_byte(0b10111000) # X addr (page) 0
-	send_byte(0b11000000) # Z addr (display start line) 0
+	set_y(0)
+	set_x(0)
+	set_z(0)
