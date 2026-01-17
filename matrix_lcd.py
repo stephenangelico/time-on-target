@@ -29,9 +29,9 @@ def pulse_enable():
 
 def set_di(mode):
 	if mode == "data":
-		GPIO.output(Pin.RS, 0)
-	elif mode == "inst":
 		GPIO.output(Pin.RS, 1)
+	elif mode == "inst":
+		GPIO.output(Pin.RS, 0)
 
 def set_rw(mode):
 	if mode == "read":
