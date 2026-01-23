@@ -86,6 +86,7 @@ def status_read():
 	display2 = GPIO.input(Pin.DB5)
 	resetting2 = GPIO.input(Pin.DB4)
 	set_rw("write")
+	set_di("data")
 	busy = busy1 or busy2
 	display = display1 or display2
 	# display will return 0 if on, therefore if either display is off, it will be 1
