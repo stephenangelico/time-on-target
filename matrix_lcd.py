@@ -22,10 +22,21 @@ class Pin(IntEnum):
 
 data_pins = (Pin.DB7, Pin.DB6, Pin.DB5, Pin.DB4, Pin.DB3, Pin.DB2, Pin.DB1, Pin.DB0)
 
-def pulse_enable():
-	GPIO.output(Pin.EN, 1)
-	time.sleep(0.000001)
-	GPIO.output(Pin.EN, 0)
+def set_cs(chip):
+	print("Chip selected:", chip)
+	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
+	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
+
+_chip_select_stack = [3]
+
+class cs:
+	def __init__(self, which): self.which = which
+	def __enter__(self):
+		_chip_select_stack.append(self.which)
+		set_cs(self.which)
+	def __exit__(self, t,v,tb):
+		_chip_select_stack.pop()
+		set_cs(_chip_select_stack[-1])
 
 def set_di(mode):
 	if mode == "data":
@@ -43,10 +54,10 @@ def set_rw(mode):
 		for pin in data_pins:
 			GPIO.setup(pin, GPIO.OUT)
 
-def set_cs(chip):
-	print("Chip selected:", chip)
-	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
-	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
+def pulse_enable():
+	GPIO.output(Pin.EN, 1)
+	time.sleep(0.000001)
+	GPIO.output(Pin.EN, 0)
 
 # Pixels are addressed in vertical segments of 8 pixels.
 
@@ -106,21 +117,16 @@ def send_byte(databyte):
 		else:
 			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
 
-# TODO: add function for clearing everything on display. This did not quite clear a row:
-# for i in range(0,63):
-# ...     matrix_lcd.set_y(i)
-# ...     matrix_lcd.send_byte(0b00000000)
-# Left last column untouched, and for some reason between set_cs() calls only worked on 2nd chip
 def cls():
-	set_cs(3)
-	set_x(0)
-	set_y(0)
-	set_z(0)
-	for i in range(0,7):
-		set_x(i)
-		send_byte(0b00000000)
-		for n in range(1,63):
-			pulse_enable()
+	"""Clear the screen"""
+	with cs(3):
+		set_y(0)
+		for i in range(8):
+			set_x(i)
+			send_byte(0b00000000)
+			for n in range(63): # Because we already did one
+				pulse_enable()
+		set_x(0)
 
 def init():
 	# Refer to https://github.com/crystalfontz/Neotec-NT7108/blob/main/NT7108/NT7108.ino
@@ -130,6 +136,7 @@ def init():
 	for pin in Pin:
 		GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 	GPIO.output(Pin.RST, 1)
+	set_cs(_chip_select_stack[-1]) # First time setting CS - use context manager hereafter
 	# Loop below is same as in send_byte() except reading third state instead of first
 	while "still booting":
 		ready_state = status_read()
@@ -138,7 +145,7 @@ def init():
 		else:
 			time.sleep(0.0001)
 	set_di("inst")
-	set_cs(3)
 	set_rw("write")
 	send_byte(0b00111111) # Display on
+	set_z(0)
 	cls()
