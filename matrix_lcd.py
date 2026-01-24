@@ -72,26 +72,22 @@ def set_z(addr):
 	set_di("data")
 
 def status_read():
+	"""
+	Read the status of the currently selected segment controller(s)
+	Returns Busy, Display and Reset flags from display.LCD module naturally gives
+	an OR of status flags, so if both controllers are selected, a high on any flag
+	on either chip will be high in the result.
+	A result of all zeros indicates everything is good to go. However, the return
+	yields all three in case you only care about one flag.
+	"""
 	set_di("inst")
-	set_rw("read")
-	# Check each segment controller one at a time
-	set_cs(1)
+	set_rw("read") # This sets all data bits to inputs so we can read them
 	pulse_enable()
-	busy1 = GPIO.input(Pin.DB7)
-	display1 = GPIO.input(Pin.DB5)
-	resetting1 = GPIO.input(Pin.DB4)
-	set_cs(2)
-	pulse_enable()
-	busy2 = GPIO.input(Pin.DB7)
-	display2 = GPIO.input(Pin.DB5)
-	resetting2 = GPIO.input(Pin.DB4)
+	busy = GPIO.input(Pin.DB7)
+	display = GPIO.input(Pin.DB5) # Display bit is 0 for on, 1 for off
+	resetting = GPIO.input(Pin.DB4)
 	set_rw("write")
 	set_di("data")
-	busy = busy1 or busy2
-	display = display1 or display2
-	# display will return 0 if on, therefore if either display is off, it will be 1
-	# This will signal that one or both displays need to be turned on
-	resetting = resetting1 or resetting2
 	return busy, display, resetting
 
 def send_byte(databyte):
