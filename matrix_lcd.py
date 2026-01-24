@@ -111,7 +111,16 @@ def send_byte(databyte):
 # ...     matrix_lcd.set_y(i)
 # ...     matrix_lcd.send_byte(0b00000000)
 # Left last column untouched, and for some reason between set_cs() calls only worked on 2nd chip
-
+def cls():
+	set_cs(3)
+	set_x(0)
+	set_y(0)
+	set_z(0)
+	for i in range(0,7):
+		set_x(i)
+		send_byte(0b00000000)
+		for n in range(1,63):
+			pulse_enable()
 
 def init():
 	# Refer to https://github.com/crystalfontz/Neotec-NT7108/blob/main/NT7108/NT7108.ino
@@ -132,6 +141,4 @@ def init():
 	set_cs(3)
 	set_rw("write")
 	send_byte(0b00111111) # Display on
-	set_y(0)
-	set_x(0)
-	set_z(0)
+	cls()
