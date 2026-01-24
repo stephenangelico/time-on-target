@@ -23,7 +23,6 @@ class Pin(IntEnum):
 data_pins = (Pin.DB7, Pin.DB6, Pin.DB5, Pin.DB4, Pin.DB3, Pin.DB2, Pin.DB1, Pin.DB0)
 
 def set_cs(chip):
-	print("Chip selected:", chip)
 	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
 	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
 
