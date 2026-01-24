@@ -44,9 +44,9 @@ def set_rw(mode):
 			GPIO.setup(pin, GPIO.OUT)
 
 def set_cs(chip):
+	print("Chip selected:", chip)
 	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
 	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
-	pulse_enable()
 
 # Pixels are addressed in vertical segments of 8 pixels.
 
