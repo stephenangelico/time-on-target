@@ -5,7 +5,7 @@ def circle(inner, outer):
 	for r, row in enumerate(display):
 		for c in range(len(row)):
 			d = (r-32) ** 2 + (c/2-32)**2
-			row[c] = 700 < d < 800
+			row[c] = inner < d < outer
 
 def line(x1, y1, x2, y2):
 	... # TODO
