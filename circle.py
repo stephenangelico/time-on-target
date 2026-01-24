@@ -37,8 +37,17 @@ circle(700, 800)
 update()
 print("Changed and updated in", time.monotonic() - t)
 
-time.sleep(5)
+# Pulse for a few seconds
+for _ in range(5):
+	circle(800, 900)
+	update()
+	time.sleep(0.5)
+	circle(700, 800)
+	update()
+	time.sleep(0.5)
+
 t = time.monotonic()
 matrix_lcd.cls()
 print("Cleared in", time.monotonic() - t)
+
 matrix_lcd.GPIO.cleanup()
