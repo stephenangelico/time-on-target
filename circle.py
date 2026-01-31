@@ -29,14 +29,6 @@ def update():
 						matrix_lcd.GPIO.output(pin, display[r+7-i][base + c])
 					matrix_lcd.pulse_enable()
 
-circle(800, 900)
-t = time.monotonic()
-update()
-print("Updated in", time.monotonic() - t)
-circle(700, 800)
-update()
-print("Changed and updated in", time.monotonic() - t)
-
 # Pulse for a few seconds
 for _ in range(5):
 	circle(800, 900)
@@ -46,8 +38,5 @@ for _ in range(5):
 	update()
 	time.sleep(0.5)
 
-t = time.monotonic()
-matrix_lcd.cls()
-print("Cleared in", time.monotonic() - t)
-
+matrix_lcd.fill(0b00000000)
 matrix_lcd.GPIO.cleanup()
