@@ -55,7 +55,7 @@ def set_rw(mode):
 
 def pulse_enable():
 	GPIO.output(Pin.EN, 1)
-	time.sleep(0.000001)
+	#time.sleep(0.000001) # Unnecessary on a Pi - GPIO timing is longer than the 1 usec minimum pulse time
 	GPIO.output(Pin.EN, 0)
 
 # Pixels are addressed in vertical segments of 8 pixels.
@@ -128,13 +128,12 @@ def init():
 		GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
 	GPIO.output(Pin.RST, 1)
 	set_cs(_chip_select_stack[-1]) # First time setting CS - use context manager hereafter
-	# Loop below is same as in send_byte() except reading third state instead of first
 	while "still booting":
 		ready_state = status_read()
 		if not ready_state[2]:
 			break
 		else:
-			time.sleep(0.0001)
+			time.sleep(0.0001) # Longer than the 60usec max busy time
 	set_di("inst")
 	set_rw("write")
 	send_byte(0b00111111) # Display on
