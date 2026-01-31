@@ -35,6 +35,7 @@ def draw_text(x, y, text):
 				row[x + i] = ch != " "
 		x += len(font[0]) + LETTERSPACING
 
+init()
 draw_text(0, 6, input("Enter some text: "))
 draw_text(0, 6 + ADVANCEMENT, input("Enter some text: "))
 update()
