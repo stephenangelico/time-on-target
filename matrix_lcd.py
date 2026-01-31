@@ -171,10 +171,10 @@ def init():
 if __name__ == "__main__":
 	init()
 	for _ in range(5):
-		circle(800, 900)
+		ellipse(800, 900)
 		update()
 		time.sleep(0.5)
-		circle(700, 800)
+		ellipse(700, 800)
 		update()
 		time.sleep(0.5)
 	fill(0b00000000)
