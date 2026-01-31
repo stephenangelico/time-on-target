@@ -117,13 +117,13 @@ def send_byte(databyte):
 		else:
 			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
 
-def cls():
-	"""Clear the screen"""
+def fill(databyte):
+	"""Fill the screen with the given pattern"""
 	with cs(3):
 		set_y(0)
 		for i in range(8):
 			set_x(i)
-			send_byte(0b00000000)
+			send_byte(databyte)
 			for n in range(63): # Because we already did one
 				pulse_enable()
 		set_x(0)
@@ -146,4 +146,4 @@ def init():
 	set_rw("write")
 	send_byte(0b00111111) # Display on
 	set_z(0)
-	cls()
+	fill(0b00000000) # Clear screen
