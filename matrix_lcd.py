@@ -109,13 +109,6 @@ def send_byte(databyte):
 		# For any pin, if state is the string "0", comparing against the string "1"
 		# will be false and thus set the pin state to low.
 	pulse_enable()
-	# TODO: Do we really need a busy check?
-	while "busy":
-		busy_state = status_read()
-		if not busy_state[0]:
-			break
-		else:
-			time.sleep(0.0001) # 100usec, well over the 60usec max busy time
 
 def fill(databyte):
 	"""Fill the screen with the given pattern"""
