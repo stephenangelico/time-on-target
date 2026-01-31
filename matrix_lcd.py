@@ -22,6 +22,9 @@ class Pin(IntEnum):
 
 data_pins = (Pin.DB7, Pin.DB6, Pin.DB5, Pin.DB4, Pin.DB3, Pin.DB2, Pin.DB1, Pin.DB0)
 
+# Display buffer - 64 rows (arrays) of 128 pixels
+display = [[0] * 128 for _ in range(64)]
+
 def set_cs(chip):
 	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
 	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
@@ -121,6 +124,31 @@ def fill(databyte):
 				pulse_enable()
 		set_x(0)
 
+def line(x1, y1, x2, y2):
+	... # TODO
+
+def draw_text(x1, y1, text):
+	... # TODO. Need to build a font.
+
+def ellipse(inner, outer):
+	for r, row in enumerate(display):
+		for c in range(len(row)):
+			d = (r-32) ** 2 + (c/2-32)**2
+			row[c] = inner < d < outer
+
+def update():
+	set_y(0) # Allow autoincrement to take us all the way
+	for r in range(0, len(display), 8):
+		set_x(r >> 3) # Assumed to be in cs(3)
+		for chip in (1, 2):
+			with cs(chip):
+				base = 64 if chip == 2 else 0
+				for c in range(64):
+					# Breach encapsulation a bit here
+					for i, pin in enumerate(data_pins):
+						GPIO.output(pin, display[r+7-i][base + c])
+					pulse_enable()
+
 def init():
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
@@ -139,3 +167,15 @@ def init():
 	send_byte(0b00111111) # Display on
 	set_z(0)
 	fill(0b00000000) # Clear screen
+
+if __name__ == "__main__":
+	init()
+	for _ in range(5):
+		circle(800, 900)
+		update()
+		time.sleep(0.5)
+		circle(700, 800)
+		update()
+		time.sleep(0.5)
+	fill(0b00000000)
+	GPIO.cleanup()
