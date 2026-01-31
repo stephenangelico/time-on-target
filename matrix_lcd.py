@@ -47,7 +47,7 @@ def set_rw(mode):
 	if mode == "read":
 		GPIO.output(Pin.RW, 1)
 		for pin in data_pins:
-			GPIO.setup(pin, GPIO.IN)
+			GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	elif mode == "write":
 		GPIO.output(Pin.RW, 0)
 		for pin in data_pins:
