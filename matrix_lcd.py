@@ -129,8 +129,6 @@ def cls():
 		set_x(0)
 
 def init():
-	# Refer to https://github.com/crystalfontz/Neotec-NT7108/blob/main/NT7108/NT7108.ino
-	# (Arduino code) for examples - written in C++ so needs to be converted
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 	for pin in Pin:
