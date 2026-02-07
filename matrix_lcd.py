@@ -157,10 +157,11 @@ def ellipse(inner, outer):
 
 def ticking_clock():
 	while True:
+		t = time.monotonic()
 		draw_text(0, 6, time.strftime("%H:%M:%S"))
 		# Row = ASCENDER + BASE -1 (zero-base address)
 		update()
-		time.sleep(0.5)
+		time.sleep(0.5 - time.monotonic() + t)
 
 def update():
 	set_y(0) # Allow autoincrement to take us all the way
