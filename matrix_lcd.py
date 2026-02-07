@@ -167,6 +167,11 @@ def init():
 	set_z(0)
 	fill(0b00000000) # Clear screen
 
+def cleanup():
+	# TODO: add PWM when circuitry is working again
+	fill(0b00000000)
+	GPIO.cleanup()
+
 if __name__ == "__main__":
 	init()
 	for _ in range(5):
@@ -176,5 +181,4 @@ if __name__ == "__main__":
 		ellipse(700, 800)
 		update()
 		time.sleep(0.5)
-	fill(0b00000000)
-	GPIO.cleanup()
+	cleanup()
