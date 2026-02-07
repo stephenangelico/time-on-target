@@ -2,6 +2,7 @@
 import time
 from enum import IntEnum
 import RPi.GPIO as GPIO
+import font_small
 
 # Pin GPIO numbers
 class Pin(IntEnum):
@@ -124,11 +125,27 @@ def fill(databyte):
 				pulse_enable()
 		set_x(0)
 
-def line(x1, y1, x2, y2):
-	... # TODO
-
-def draw_text(x1, y1, text):
-	... # TODO. Need to build a font.
+def draw_text(x, y, text):
+	"""Draw text with its baseline starting at (x,y)"""
+	rows = display[y - font_small.ASCENDER - font_small.BASE + 1 : y + font_small.DESCENDER + 1]
+	# Rows aren't a convenient 8 pixels aligning with display X addresses, we need more height
+	# so we define our own rows.
+	for char in text:
+		try:
+			font = font_small.FONT[char]
+			# Render character from global font
+		except KeyError:
+			# Fallback modes
+			try:
+				font = font_small.FONT[char.upper()]
+			except KeyError:
+				font = font_small.FONT[" "]
+		for row, pixels in zip(rows, font):
+			# Updating row which is in rows[] directly updates the display buffer
+			for i, ch in enumerate(pixels):
+				row[x + i] = ch != " "
+				# If the font has something in that pixel, it's high, if blank it's low
+		x += len(font[0]) + font_small.LETTERSPACING
 
 def ellipse(inner, outer):
 	for r, row in enumerate(display):
@@ -174,11 +191,15 @@ def cleanup():
 
 if __name__ == "__main__":
 	init()
-	for _ in range(5):
-		ellipse(800, 900)
-		update()
-		time.sleep(0.5)
-		ellipse(700, 800)
-		update()
-		time.sleep(0.5)
+	#for _ in range(5):
+	#	ellipse(800, 900)
+	#	update()
+	#	time.sleep(0.5)
+	#	ellipse(700, 800)
+	#	update()
+	#	time.sleep(0.5)
+	draw_text(0, 6, input("Enter some text: "))
+	draw_text(0, 6 + ADVANCEMENT, input("Enter some text: "))
+	update()
+	time.sleep(3)
 	cleanup()
