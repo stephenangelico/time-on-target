@@ -199,7 +199,7 @@ if __name__ == "__main__":
 	#	update()
 	#	time.sleep(0.5)
 	draw_text(0, 6, input("Enter some text: "))
-	draw_text(0, 6 + ADVANCEMENT, input("Enter some text: "))
+	draw_text(0, 6 + font_small.ADVANCEMENT, input("Enter some text: "))
 	update()
 	time.sleep(3)
 	cleanup()
