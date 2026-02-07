@@ -127,6 +127,8 @@ def fill(databyte):
 
 def draw_text(x, y, text):
 	"""Draw text with its baseline starting at (x,y)"""
+	# X and Y positions here refer to cartesian coordinates, as distinct from the mode used by the
+	# display for addressing.
 	rows = display[y - font_small.ASCENDER - font_small.BASE + 1 : y + font_small.DESCENDER + 1]
 	# Rows aren't a convenient 8 pixels aligning with display X addresses, we need more height
 	# so we define our own rows.
@@ -152,6 +154,13 @@ def ellipse(inner, outer):
 		for c in range(len(row)):
 			d = (r-32) ** 2 + (c/2-32)**2
 			row[c] = inner < d < outer
+
+def ticking_clock():
+	while True:
+		draw_text(0, 6, time.strftime("%H:%M:%S"))
+		# Row = ASCENDER + BASE -1 (zero-base address)
+		update()
+		time.sleep(0.5)
 
 def update():
 	set_y(0) # Allow autoincrement to take us all the way
@@ -198,8 +207,13 @@ if __name__ == "__main__":
 	#	ellipse(700, 800)
 	#	update()
 	#	time.sleep(0.5)
-	draw_text(0, 6, input("Enter some text: "))
-	draw_text(0, 6 + font_small.ADVANCEMENT, input("Enter some text: "))
-	update()
-	time.sleep(3)
-	cleanup()
+	#draw_text(0, 6, input("Enter some text: "))
+	#draw_text(0, 6 + font_small.ADVANCEMENT, input("Enter some text: "))
+	#update()
+	#time.sleep(3)
+	try:
+		ticking_clock()
+	except KeyboardInterrupt:
+		pass
+	finally:
+		cleanup()
