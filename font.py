@@ -1,4 +1,16 @@
 # Broken out into its own file since these will be fairly large
+
+ASCENDER = 3
+BASE = 4
+DESCENDER = 0 # TODO: 3
+LEADING = 1 # Note: This is not how far it leads (pron leed) but how much lead is used (pron ledd).
+LINEHEIGHT = ASCENDER + BASE + DESCENDER
+ADVANCEMENT = LINEHEIGHT + LEADING
+LETTERSPACING = 1 # Pixels between characters horizontally
+
+# NOTE: Any non-space character will make the pixel active. The width of the first row will determine
+# the width of the character (others should all match).
+
 FONT = {
 	" ": ["     "] * 7,
 	# "A": [
