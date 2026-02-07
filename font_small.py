@@ -12,16 +12,7 @@ LETTERSPACING = 1 # Pixels between characters horizontally
 # the width of the character (others should all match).
 
 FONT = {
-	" ": ["     "] * 7,
-	# "A": [
-		# "  X  ",
-		# " X X ",
-		# "X   X",
-		# "XXXXX",
-		# "X   X",
-		# "X   X",
-		# "X   X",
-	# ],
+	" ": ["     "] * 7, # Critical - without this for unknown characters, everything will bomb
 	"I": ["X"] * 7, # Special case: Narrow the I. If you don't want this, make it "  X  " instead.
 	":": [ # Slightly narrower than digits
 		"    ",
