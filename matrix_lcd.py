@@ -144,7 +144,6 @@ def update():
 			with cs(chip):
 				base = 64 if chip == 2 else 0
 				for c in range(64):
-					# Breach encapsulation a bit here
 					for i, pin in enumerate(data_pins):
 						GPIO.output(pin, display[r+7-i][base + c])
 					pulse_enable()
