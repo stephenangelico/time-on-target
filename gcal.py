@@ -24,12 +24,14 @@ def get_access_token():
 def main():
 	creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 	# TODO: Proper checking of tokens
-	
 	service = build("calendar", "v3", credentials=creds)
-	calendar_list = service.calendarList().list().execute()
-	events = service.events().list(calendarId=CAL_ID, singleEvents=True, maxResults=10, orderBy="startTime").execute()
+	now = datetime.datetime.now(tz=datetime.UTC).isoformat()
+	# Don't reuse this - GCal call may take time
+	events = service.events().list(calendarId=CAL_ID, timeMin=now, singleEvents=True, maxResults=15, orderBy="startTime").execute()
 	for event in events["items"]:
-		print(event["summary"], datetime.datetime.fromisoformat(event["start"]["dateTime"]))
+		event_time = datetime.datetime.fromisoformat(event["start"]["dateTime"])
+		print(event["summary"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC)))
+		break
 
 if __name__ == "__main__":
 	main()
