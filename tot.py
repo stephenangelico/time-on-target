@@ -28,6 +28,7 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, 6, time.strftime("%H:%M:%S"))
 		matrix_lcd.draw_text(0, 14, next_name)
 		matrix_lcd.draw_text(0, 22, next_time)
+		# TODO: Make this count down
 		# Row = ASCENDER + BASE -1 (zero-base address)
 		matrix_lcd.update()
 		time.sleep(0.5 - time.monotonic() + t)
