@@ -40,6 +40,7 @@ def main():
 
 if __name__ == "__main__":
 	try:
+		matrix_lcd.init()
 		clock_ticker()
 	except KeyboardInterrupt:
 		pass
