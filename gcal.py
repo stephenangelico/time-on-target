@@ -20,11 +20,17 @@ def main():
 	if not creds or not creds.valid: # Do we have a problem with credentials?
 		if creds and creds.expired and creds.refresh_token: # Do we have old creds or no creds?
 			creds.refresh(Request()) # If they're old, refresh them.
+			# Refresh token includesa an expiry of ~28 hours - a day plus grace time
+			# TODO: explore refresh token and find the time_t (Unix time) of expiration
 		else: # If we don't have creds, get them.
 			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
 			# If you don't have the credentials from the Google Cloud Console, there
 			# is nothing to be done here. I could make the error prettier but why.
 			creds = flow.run_local_server(port=0)
+			# This only works on a machine with a browser - it is not easy to use a flow
+			# more suitable for a headless system.
+			# Because of the aforementioned 28 hour refresh token expiry, manual reauth
+			# will be necessary in dev until TOT runs perpetually.
 		with open("token.json", "w") as token: # Save creds if we got them
 			token.write(creds.to_json())
 	service = build("calendar", "v3", credentials=creds)
