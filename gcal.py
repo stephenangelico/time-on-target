@@ -19,7 +19,11 @@ def main():
 		creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 	if not creds or not creds.valid: # Do we have a problem with credentials?
 		if creds and creds.expired and creds.refresh_token: # Do we have old creds or no creds?
-			creds.refresh(Request()) # If they're old, refresh them.
+			try:
+				creds.refresh(Request()) # If they're old, refresh them.
+			except google.auth.exceptions.RefreshError:
+				flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+				creds = flow.run_local_server(port=0)
 			# Refresh tokens seem to expire, requiring full reauth, but we don't know how long
 			# before they expire. A check-in every 15 minutes may also mitigate this, as other
 			# projects (see Rosuav/LetMeKnow) don't seem to need this rigmarole.
