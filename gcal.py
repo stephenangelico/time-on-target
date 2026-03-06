@@ -38,6 +38,7 @@ def main():
 					# wouldn't work. Therefore, it is much easier for a hopefully rare situation
 					# to just run gcal.py from a desktop and copy the new token.json over.
 					print("Error: Re-auth required. Manually run gcal.py from a desktop and copy the new token.json over.", file=sys.stderr)
+					sys.exit() # Nothing further we can do right now until we get new credentials
 		else: # If we don't have creds, get them.
 			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
 			# If you don't have the credentials from the Google Cloud Console, there
