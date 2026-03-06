@@ -26,10 +26,12 @@ def main():
 			# before they expire. A check-in every 15 minutes may also mitigate this, as other
 			# projects (see Rosuav/LetMeKnow) don't seem to need this rigmarole.
 			try:
+				print("Token out of date, refreshing...")
 				creds.refresh(Request()) # If they're old, refresh them.
 			except google.auth.exceptions.RefreshError:
 				# If they're expired, reauth.
 				try:
+					print("Error refreshing token, attempting re-auth...")
 					flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
 					creds = flow.run_local_server(port=0)
 				except webbrowser.Error:
@@ -40,6 +42,7 @@ def main():
 					print("Error: Re-auth required. Manually run gcal.py from a desktop and copy the new token.json over.", file=sys.stderr)
 					sys.exit() # Nothing further we can do right now until we get new credentials
 		else: # If we don't have creds, get them.
+			print("Credentials not found, re-authenicating...")
 			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
 			# If you don't have the credentials from the Google Cloud Console, there
 			# is nothing to be done here. I could make the error prettier but why.
