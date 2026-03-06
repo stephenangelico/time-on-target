@@ -1,6 +1,8 @@
 # Google Calendar integration module
 import os
+import sys
 import datetime
+import webbrowser
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -20,14 +22,22 @@ def main():
 		creds = Credentials.from_authorized_user_file("token.json", SCOPES)
 	if not creds or not creds.valid: # Do we have a problem with credentials?
 		if creds and creds.expired and creds.refresh_token: # Do we have old creds or no creds?
-			try:
-				creds.refresh(Request()) # If they're old, refresh them.
-			except google.auth.exceptions.RefreshError:
-				flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-				creds = flow.run_local_server(port=0)
 			# Refresh tokens seem to expire, requiring full reauth, but we don't know how long
 			# before they expire. A check-in every 15 minutes may also mitigate this, as other
 			# projects (see Rosuav/LetMeKnow) don't seem to need this rigmarole.
+			try:
+				creds.refresh(Request()) # If they're old, refresh them.
+			except google.auth.exceptions.RefreshError:
+				# If they're expired, reauth.
+				try:
+					flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+					creds = flow.run_local_server(port=0)
+				except webbrowser.Error:
+					# If this is running on the Pi, we can't open the OAuth page in browser,
+					# and if we could somehow trigger the page to open on a desktop, the redirect
+					# wouldn't work. Therefore, it is much easier for a hopefully rare situation
+					# to just run gcal.py from a desktop and copy the new token.json over.
+					print("Error: Re-auth required. Manually run gcal.py from a desktop and copy the new token.json over.", file=sys.stderr)
 		else: # If we don't have creds, get them.
 			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
 			# If you don't have the credentials from the Google Cloud Console, there
