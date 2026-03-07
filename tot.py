@@ -19,12 +19,29 @@ import threading
 import matrix_lcd
 import gcal
 
-next_time = "00:00 (00h)"
-next_name = "Very long alarm name"
+threads = []
 
-def clock_ticker():
+alarms = []
+cancelled_alarms = []
+
+def cal_sync():
 	while True:
 		t = time.monotonic()
+		global alarms
+		alarms = gcal.main()
+		time.sleep(900 - time.monotonic() + t)
+		# TODO: sync more frequently as time to next event approaches
+
+def clock_ticker():
+	next_time = "00:00 (00h)"
+	next_name = "Very long alarm name"
+	while True:
+		t = time.monotonic()
+		for alarm in alarms:
+			if alarm[0] not in cancelled_alarms:
+				next_name = alarm[1]
+				next_time = (alarm[2].strftime("%d/%m %H:%M")) # TODO: Add time delta
+				break
 		matrix_lcd.draw_text(0, 6, time.strftime("%H:%M:%S"))
 		matrix_lcd.draw_text(0, 14, next_name)
 		matrix_lcd.draw_text(0, 22, next_time)
@@ -35,9 +52,6 @@ def clock_ticker():
 
 def cleanup():
 	matrix_lcd.cleanup()
-
-def main():
-	pass
 
 if __name__ == "__main__":
 	try:
