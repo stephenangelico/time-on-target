@@ -61,7 +61,7 @@ def main():
 	alarms = []
 	for event in events["items"]:
 		event_time = datetime.datetime.fromisoformat(event["start"]["dateTime"])
-		alarm = event["summary"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC))
+		alarm = event["id"], event["summary"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC))
 		alarms.append(alarm)
 	return alarms
 
