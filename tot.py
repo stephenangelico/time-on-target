@@ -19,8 +19,6 @@ import threading
 import matrix_lcd
 import gcal
 
-threads = []
-
 alarms = []
 cancelled_alarms = []
 
@@ -55,6 +53,8 @@ def cleanup():
 
 if __name__ == "__main__":
 	try:
+		t = threading.Thread(target=cal_sync)
+		t.start()
 		matrix_lcd.init()
 		clock_ticker()
 	except KeyboardInterrupt:
