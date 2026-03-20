@@ -40,6 +40,7 @@ def clock_ticker():
 				next_name = alarm[1]
 				next_time = (alarm[2].strftime("%d/%m %H:%M")) # TODO: Add time delta
 				break
+		matrix_lcd.clear_display()
 		matrix_lcd.draw_text(0, 6, time.strftime("%H:%M:%S"))
 		matrix_lcd.draw_text(0, 14, next_name)
 		matrix_lcd.draw_text(0, 22, next_time)
