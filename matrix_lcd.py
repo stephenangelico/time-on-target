@@ -24,7 +24,9 @@ class Pin(IntEnum):
 data_pins = (Pin.DB7, Pin.DB6, Pin.DB5, Pin.DB4, Pin.DB3, Pin.DB2, Pin.DB1, Pin.DB0)
 
 # Display buffer - 64 rows (arrays) of 128 pixels
-display = [[0] * 128 for _ in range(64)]
+def clear_display():
+	display[:] = [[0] * 128 for _ in range(64)]
+display = []; clear_display()
 
 def set_cs(chip):
 	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
@@ -148,6 +150,7 @@ def draw_text(x, y, text):
 				row[x + i] = ch != " "
 				# If the font has something in that pixel, it's high, if blank it's low
 		x += len(font[0]) + font_small.LETTERSPACING
+		# Width of character (character is a list of rows - len(font) is height)
 
 def ellipse(inner, outer):
 	for r, row in enumerate(display):
