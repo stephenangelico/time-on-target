@@ -4,7 +4,7 @@
 # PWM backlight
 #
 # Tasks that will run:
-# GCal sync
+# GCal sync - done
 # Current/imminent alarm
 # Display renderer - done
 # Button listener (note: use GPIO.PUD_UP)
@@ -15,6 +15,7 @@
 # Animate exploding chevrons while ringing?
 
 import time
+import datetime
 import threading
 import matrix_lcd
 import gcal
@@ -38,7 +39,11 @@ def clock_ticker():
 		for alarm in alarms:
 			if alarm[0] not in cancelled_alarms:
 				next_name = alarm[1]
-				next_time = (alarm[2].strftime("%d/%m %H:%M")) # TODO: Add time delta
+				alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
+				if alarm_delta.total_seconds() < 0:
+					tag = "NOW"
+				# TODO: make tag simplest time delta estimate, eg "1d", "2h", "22m"
+				next_time = (alarm[2].strftime("%d/%m %H:%M")
 				break
 		matrix_lcd.clear_display()
 		matrix_lcd.draw_text(0, 6, time.strftime("%H:%M:%S"))
