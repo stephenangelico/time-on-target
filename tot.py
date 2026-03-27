@@ -40,7 +40,15 @@ def clock_ticker():
 			if alarm[0] not in cancelled_alarms:
 				next_name = alarm[1]
 				alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
-				if alarm_delta.total_seconds() < 0:
+				if alarm_delta.total_seconds() > 86400:
+					tag = "%dd" % (alarm_delta.total_seconds() // 86400)
+				elif alarm_delta.total_seconds() > 3600:
+					tag = "%dh" % (alarm_delta.total_seconds() // 3600)
+				elif alarm_delta.total_seconds() > 60:
+					tag = "%dm" % (alarm_delta.total_seconds() // 60)
+				elif 60 > alarm_delta.total_seconds() > 0:
+					tag = "0m"
+				elif alarm_delta.total_seconds() < 0:
 					tag = "NOW"
 				# TODO: make tag simplest time delta estimate, eg "1d", "2h", "22m"
 				next_time = (alarm[2].strftime("%d/%m %H:%M")
