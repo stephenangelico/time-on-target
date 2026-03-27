@@ -48,3 +48,11 @@ X X X   X     X    XXX  X  X  XXXX  XXXX     X   XXX   XXXX
 XX  X   X    X        X XXXXX     X X   X    X  X   X     X
 X   X   X   X     X   X    X  X   X X   X   X   X   X     X
  XXX   XXX  XXXXX  XXX     X   XXX   XXX    X    XXX      X""")
+_make_font("""()/!?
+   X   X       X  XX    XXX 
+  X     X     X  XXXX  X   X
+ X       X    X  XXXX     X  
+ X       X   X    XX     X  
+ X       X  X            X  
+  X     X   X     XX        
+   X   X   X      XX     X  """)
