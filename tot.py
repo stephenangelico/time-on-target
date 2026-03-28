@@ -14,9 +14,15 @@
 # If alarm is ringing, show current alarm name, and "Hold button to stop"
 # Animate exploding chevrons while ringing?
 
+import sys
 import time
 import datetime
 import threading
+try:
+	import RPi.GPIO as GPIO
+except ImportError, NotImplementedError:
+	print("This program must be run on a Raspberry Pi. Did you mean to run gcal.py?")
+	sys.quit(1)
 import matrix_lcd
 import gcal
 import font_small
@@ -31,6 +37,17 @@ def cal_sync():
 		alarms = gcal.main()
 		time.sleep(900 - time.monotonic() + t)
 		# TODO: sync more frequently as time to next event approaches
+
+def alarm_ringer():
+	pass
+	# TODO
+
+def button_listener():
+	GPIO.setwarnings(False)
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.wait_for_edge(17, GPIO.RISING)
+	# TODO: this is a stub
 
 def clock_ticker():
 	next_time = "00:00 (00h)"
@@ -62,7 +79,7 @@ def clock_ticker():
 		time.sleep(0.5 - time.monotonic() + t)
 
 def cleanup():
-	matrix_lcd.cleanup()
+	matrix_lcd.cleanup() # Includes GPIO cleanup
 
 if __name__ == "__main__":
 	try:
