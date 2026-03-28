@@ -19,6 +19,7 @@ import datetime
 import threading
 import matrix_lcd
 import gcal
+import font_small
 
 alarms = []
 cancelled_alarms = []
@@ -53,10 +54,10 @@ def clock_ticker():
 				next_time = (alarm[2].strftime("%d/%m %H:%M") + " (" + tag + ")")
 				break
 		matrix_lcd.clear_display()
-		matrix_lcd.draw_text(0, 6, time.strftime("%H:%M:%S"))
-		matrix_lcd.draw_text(0, 14, next_name)
-		matrix_lcd.draw_text(0, 22, next_time)
-		# Row = ASCENDER + BASE -1 (zero-base address)
+		first_row = font_small.ASCENDER + font_small.BASE - 1 # Zero-base addressing
+		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"))
+		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), next_name)
+		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), next_time)
 		matrix_lcd.update()
 		time.sleep(0.5 - time.monotonic() + t)
 
