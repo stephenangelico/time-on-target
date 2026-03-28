@@ -2,7 +2,7 @@
 
 ASCENDER = 3
 BASE = 4
-DESCENDER = 0 # TODO: 3
+DESCENDER = 3
 LEADING = 1 # Note: This is not how far it leads (pron leed) but how much lead is used (pron ledd).
 LINEHEIGHT = ASCENDER + BASE + DESCENDER
 ADVANCEMENT = LINEHEIGHT + LEADING
