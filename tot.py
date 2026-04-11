@@ -20,9 +20,9 @@ import datetime
 import threading
 try:
 	import RPi.GPIO as GPIO
-except ImportError, NotImplementedError:
+except ImportError, RuntimeError:
 	print("This program must be run on a Raspberry Pi. Did you mean to run gcal.py?")
-	sys.quit(1)
+	sys.exit(1)
 import matrix_lcd
 import gcal
 import font_small
@@ -46,7 +46,7 @@ def button_listener():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-	GPIO.wait_for_edge(17, GPIO.RISING)
+	GPIO.wait_for_edge(17, GPIO.BOTH)
 	# TODO: this is a stub
 
 def clock_ticker():
