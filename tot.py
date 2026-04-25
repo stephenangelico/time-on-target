@@ -46,8 +46,15 @@ def button_listener():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-	GPIO.wait_for_edge(17, GPIO.BOTH)
+	GPIO.add_event_detect(17, GPIO.RISING, button_up)
+	GPIO.add_event_detect(17, GPIO.FALLING, button_down)
 	# TODO: this is a stub
+
+def button_up(chan):
+	print(chan, "released")
+
+def button_down(chan):
+	print(chan, "pressed")
 
 def clock_ticker():
 	next_time = "00:00 (00h)"
