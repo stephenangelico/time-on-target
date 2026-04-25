@@ -30,6 +30,30 @@ import font_small
 alarms = []
 cancelled_alarms = []
 
+# Copied from RPi.GPIO.__init__.py
+# Why are we subclassing an internal class in GPIO?
+# Because the API does not allow the type of button edge (rising/falling)
+# to bubble up to the event detection. This changes that, at cost of
+# compatibility - now event callbacks MUST handle the edge type, regardless of
+# what type of edge they are detecting.
+# The API also does not allow two event detections on the same channel.
+class _Alert(GPIO._Alert):
+	def _call(self, chip, gpio, level, timestamp):
+		if level == 2:
+			# Watchdog timeout; this *shouldn't* happen as we never use this
+			# part of lgpio but if there's something else messing with the API
+			# other than this shim it's a possibility
+			return
+		self._detected = True
+		for cb in self.callbacks:
+			try:
+				cb(GPIO._from_gpio(gpio), level)
+			except Exception as exc:
+				# Bug compatibility: this is how RPi.GPIO operates
+				print(exc, file=sys.stderr)
+
+GPIO._Alert = _Alert
+
 def cal_sync():
 	while True:
 		t = time.monotonic()
@@ -46,15 +70,14 @@ def button_listener():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-	GPIO.add_event_detect(17, GPIO.RISING, button_up)
-	GPIO.add_event_detect(17, GPIO.FALLING, button_down)
+	GPIO.add_event_detect(17, GPIO.BOTH, button_pressed, 50)
 	# TODO: this is a stub
 
-def button_up(chan):
-	print(chan, "released")
-
-def button_down(chan):
-	print(chan, "pressed")
+def button_pressed(chan, level):
+	if level:
+		print(chan, "released")
+	else:
+		print(chan, "pressed")
 
 def clock_ticker():
 	next_time = "00:00 (00h)"
