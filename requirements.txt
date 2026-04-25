@@ -1,3 +1,2 @@
-RPi.GPIO
 google-auth-oauthlib
 google-api-python-client
