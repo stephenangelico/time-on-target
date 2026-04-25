@@ -20,7 +20,7 @@ import datetime
 import threading
 try:
 	import RPi.GPIO as GPIO
-except ImportError, RuntimeError:
+except (ImportError, RuntimeError):
 	print("This program must be run on a Raspberry Pi. Did you mean to run gcal.py?")
 	sys.exit(1)
 import matrix_lcd
