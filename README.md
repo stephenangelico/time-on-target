@@ -13,6 +13,14 @@ Hardware:
 - 10kΩ trimpot (for LCD contrast control)
 - Wiring and JST connectors as in Wiring section
 
+Dependencies:
+-------------
+
+- Modern Linux environment[1]
+- Python 3.11+ (Untested on older versions)
+- `python3-rpi-lgpio` from package manager or `rpi-lgpio` from PyPI
+- Packages as per [requirements.txt](requirements.txt)
+
 Wiring:
 -------
 
@@ -31,3 +39,5 @@ Assorted notes:
 
 Button is on GPIO17. Need to use Pi's internal pull-up resistor:
 `GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)`
+
+[1] Windows _might_ work, but why anyone would torture themselves so is beyond me.
