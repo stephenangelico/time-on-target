@@ -74,10 +74,13 @@ def button_listener():
 	# TODO: this is a stub
 
 def button_pressed(chan, level):
+	# We are using the internal pull-up resistor, so the circuit is grounded
+	# (ie level=0) when the button is pressed, and the circuit is pulled
+	# high (ie level=1) when the button is open/released.
 	if level:
-		print(chan, "released")
+		print(time.monotonic(), chan, "released")
 	else:
-		print(chan, "pressed")
+		print(time.monotonic(), chan, "pressed")
 
 def clock_ticker():
 	next_time = "00:00 (00h)"
