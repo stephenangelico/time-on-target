@@ -30,6 +30,7 @@ import font_small
 alarms = []
 cancelled_alarms = []
 button_down = None
+latest_press = ""
 
 # Copied from RPi.GPIO.__init__.py
 # Why are we subclassing an internal class in GPIO?
@@ -69,7 +70,8 @@ def alarm_ringer():
 
 def button_timer():
 	global button_down
-	print("Long press")
+	global latest_press
+	latest_press = "Hold"
 	button_down = None
 
 def button_listener(chan, level):
@@ -80,7 +82,8 @@ def button_listener(chan, level):
 	if level:
 		if button_down:
 			button_down.cancel()
-			print("Short press")
+			global latest_press
+			latest_press = "Press"
 		button_down = None
 	else:
 		button_down = threading.Timer(1, button_timer)
@@ -124,6 +127,7 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"))
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), next_name)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), next_time)
+		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
 		matrix_lcd.update()
 		time.sleep(0.5 - time.monotonic() + t)
 
