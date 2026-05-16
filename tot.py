@@ -29,6 +29,7 @@ import font_small
 
 alarms = []
 cancelled_alarms = []
+button_down = None
 
 # Copied from RPi.GPIO.__init__.py
 # Why are we subclassing an internal class in GPIO?
@@ -66,21 +67,36 @@ def alarm_ringer():
 	pass
 	# TODO
 
-def button_listener():
-	GPIO.setwarnings(False)
-	GPIO.setmode(GPIO.BCM)
-	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-	GPIO.add_event_detect(17, GPIO.BOTH, button_pressed, 50)
-	# TODO: this is a stub
+def button_timer():
+	global button_down
+	print("Long press")
+	button_down = None
 
-def button_pressed(chan, level):
+def button_listener(chan, level):
 	# We are using the internal pull-up resistor, so the circuit is grounded
 	# (ie level=0) when the button is pressed, and the circuit is pulled
 	# high (ie level=1) when the button is open/released.
+	global button_down
+	if level:
+		if button_down:
+			button_down.cancel()
+			print("Short press")
+		button_down = None
+	else:
+		button_down = threading.Timer(1, button_timer)
+		button_down.start()
+
+def button_test(chan, level):
 	if level:
 		print(time.monotonic(), chan, "released")
 	else:
 		print(time.monotonic(), chan, "pressed")
+
+def button_setup():
+	GPIO.setwarnings(False)
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.add_event_detect(17, GPIO.BOTH, button_listener, 5)
 
 def clock_ticker():
 	next_time = "00:00 (00h)"
