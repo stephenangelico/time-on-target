@@ -138,6 +138,7 @@ if __name__ == "__main__":
 	try:
 		t = threading.Thread(target=cal_sync, daemon=True)
 		t.start()
+		button_setup()
 		matrix_lcd.init()
 		clock_ticker()
 	except KeyboardInterrupt:
