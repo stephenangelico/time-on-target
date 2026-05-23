@@ -31,6 +31,7 @@ import font_small
 
 alarms = []
 cancelled_alarms = []
+current_alarm = 0
 button_down = None
 latest_press = ""
 disp_r, disp_w = os.pipe() # Signal to update display immediately
@@ -71,10 +72,21 @@ def alarm_ringer():
 	pass
 	# TODO
 
+def button_held():
+	if alarm_active:
+		pass # TODO: Stop alarm
+	else:
+		if current_alarm not in cancelled_alarms:
+			cancelled_alarms.append(current_alarm)
+			print("Alarm", current_alarm, "cancelled")
+		else:
+			cancelled_alarms.remove(current_alarm) # Uncancel, not sure if we need it though
+
 def button_timer():
 	global button_down
 	global latest_press
 	latest_press = "Hold"
+	button_held()
 	os.write(disp_w, b"u")
 	button_down = None
 
@@ -116,6 +128,8 @@ def clock_ticker():
 		t = time.monotonic()
 		for alarm in alarms:
 			if alarm[0] not in cancelled_alarms:
+				global current_alarm
+				current_alarm = alarm[0]
 				next_name = alarm[1]
 				alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
 				if alarm_delta.total_seconds() >= 86400:
