@@ -14,8 +14,10 @@
 # If alarm is ringing, show current alarm name, and "Hold button to stop"
 # Animate exploding chevrons while ringing?
 
+import os
 import sys
 import time
+import selectors
 import datetime
 import threading
 try:
@@ -31,6 +33,7 @@ alarms = []
 cancelled_alarms = []
 button_down = None
 latest_press = ""
+disp_r, disp_w = os.pipe() # Signal to update display immediately
 
 # Copied from RPi.GPIO.__init__.py
 # Why are we subclassing an internal class in GPIO?
@@ -72,6 +75,7 @@ def button_timer():
 	global button_down
 	global latest_press
 	latest_press = "Hold"
+	os.write(disp_w, b"u")
 	button_down = None
 
 def button_listener(chan, level):
@@ -84,6 +88,7 @@ def button_listener(chan, level):
 			button_down.cancel()
 			global latest_press
 			latest_press = "Press"
+			os.write(disp_w, b"u")
 		button_down = None
 	else:
 		button_down = threading.Timer(1, button_timer)
@@ -104,6 +109,9 @@ def button_setup():
 def clock_ticker():
 	next_time = "00:00 (00h)"
 	next_name = "Very long alarm name"
+	# Listen for signal to update display immediately
+	sel = selectors.DefaultSelector()
+	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
 		for alarm in alarms:
@@ -129,7 +137,7 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), next_time)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
 		matrix_lcd.update()
-		time.sleep(0.5 - time.monotonic() + t)
+		if sel.select(0.5 - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout (0.5sec minus draw time) or a signal
 
 def cleanup():
 	matrix_lcd.cleanup() # Includes GPIO cleanup
