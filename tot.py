@@ -32,6 +32,7 @@ import font_small
 alarms = []
 cancelled_alarms = []
 current_alarm = 0
+alarm_active = False
 button_down = None
 latest_press = ""
 disp_r, disp_w = os.pipe() # Signal to update display immediately
