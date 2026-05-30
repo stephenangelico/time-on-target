@@ -31,7 +31,7 @@ import font_small
 
 alarms = []
 cancelled_alarms = []
-current_alarm = 0
+current_alarm = ""
 alarm_active = False
 button_down = None
 latest_press = ""
@@ -66,8 +66,19 @@ def cal_sync():
 		t = time.monotonic()
 		global alarms
 		alarms = gcal.main()
-		time.sleep(900 - time.monotonic() + t)
-		# TODO: sync more frequently as time to next event approaches
+		for alarm in alarms:
+			# TODO: optimize if alarm is cancelled
+			if alarm[3].seconds > 1800:
+				d = 900
+			elif alarm[3].seconds > 900:
+				d = 300
+			elif alarm[3].seconds > 300:
+				d = 60
+			elif alarm[3].seconds > 60:
+				d = 30
+			else:
+				d = alarm[3].seconds + 5
+		time.sleep(d - time.monotonic() + t)
 
 def alarm_ringer():
 	pass
