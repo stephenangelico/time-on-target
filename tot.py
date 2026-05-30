@@ -77,6 +77,9 @@ def button_held():
 	if alarm_active:
 		pass # TODO: Stop alarm
 	else:
+		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
+		# TODO: Special-case having no alarms
+		# TODO: Check in gcal.py if 5 alarms is enough
 		if current_alarm not in cancelled_alarms:
 			cancelled_alarms.append(current_alarm)
 			print("Alarm", current_alarm, "cancelled")
