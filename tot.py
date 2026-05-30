@@ -46,6 +46,7 @@ disp_r, disp_w = os.pipe() # Signal to update display immediately
 # compatibility - now event callbacks MUST handle the edge type, regardless of
 # what type of edge they are detecting.
 # The API also does not allow two event detections on the same channel.
+# Copyright (c) 2022-2023 Dave Jones <dave@waveform.org.uk>
 class _Alert(GPIO._Alert):
 	def _call(self, chip, gpio, level, timestamp):
 		if level == 2:
