@@ -65,7 +65,7 @@ GPIO._Alert = _Alert
 
 def ring_alarm():
 	global ringer
-	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav"]
+	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav"])
 	# TODO: Do we need VLC to loop, and if not, what do we do when it terminates?
 	global alarm_active
 	alarm_active = True
@@ -93,9 +93,9 @@ def cal_sync():
 		time.sleep(d - time.monotonic() + t)
 
 def button_held():
+	global alarm_active
 	if alarm_active:
 		ringer.send_signal(2) # Send Ctrl-C to VLC
-		global alarm_active
 		alarm_active = False
 	else:
 		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
