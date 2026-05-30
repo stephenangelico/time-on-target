@@ -67,17 +67,18 @@ def cal_sync():
 		global alarms
 		alarms = gcal.main()
 		for alarm in alarms:
-			# TODO: optimize if alarm is cancelled
-			if alarm[3].seconds > 1800:
-				d = 900
-			elif alarm[3].seconds > 900:
-				d = 300
-			elif alarm[3].seconds > 300:
-				d = 60
-			elif alarm[3].seconds > 60:
-				d = 30
-			else:
-				d = alarm[3].seconds + 5
+			if alarm[0] not in cancelled_alarms:
+				if alarm[3].seconds > 1800:
+					d = 900
+				elif alarm[3].seconds > 900:
+					d = 300
+				elif alarm[3].seconds > 300:
+					d = 60
+				elif alarm[3].seconds > 60:
+					d = 30
+				else:
+					d = alarm[3].seconds + 5
+				break
 		time.sleep(d - time.monotonic() + t)
 
 def alarm_ringer():
