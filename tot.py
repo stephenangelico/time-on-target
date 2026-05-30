@@ -151,6 +151,7 @@ def clock_ticker():
 	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
+		# TODO: if alarm_active, do not update to the next alarm - display/animate current alarm
 		for alarm in alarms:
 			if alarm[0] not in cancelled_alarms:
 				global current_alarm
