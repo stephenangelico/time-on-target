@@ -20,6 +20,7 @@ import time
 import selectors
 import datetime
 import threading
+import subprocess
 try:
 	import RPi.GPIO as GPIO
 except (ImportError, RuntimeError):
@@ -33,6 +34,7 @@ alarms = []
 cancelled_alarms = []
 current_alarm = ""
 alarm_active = False
+ringer = None
 button_down = None
 latest_press = ""
 disp_r, disp_w = os.pipe() # Signal to update display immediately
@@ -61,6 +63,13 @@ class _Alert(GPIO._Alert):
 
 GPIO._Alert = _Alert
 
+def ring_alarm():
+	global ringer
+	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav"]
+	# TODO: Do we need VLC to loop, and if not, what do we do when it terminates?
+	global alarm_active
+	alarm_active = True
+
 def cal_sync():
 	while True:
 		t = time.monotonic()
@@ -78,16 +87,16 @@ def cal_sync():
 					d = 30
 				else:
 					d = alarm[3].seconds + 5
+					a = threading.Timer(d-5, ring_alarm)
+					a.start()
 				break
 		time.sleep(d - time.monotonic() + t)
 
-def alarm_ringer():
-	pass
-	# TODO
-
 def button_held():
 	if alarm_active:
-		pass # TODO: Stop alarm
+		ringer.send_signal(2) # Send Ctrl-C to VLC
+		global alarm_active
+		alarm_active = False
 	else:
 		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
 		# TODO: Special-case having no alarms
