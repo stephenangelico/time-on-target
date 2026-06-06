@@ -154,16 +154,10 @@ def clock_ticker():
 	while True:
 		t = time.monotonic()
 		if current_alarm:
-			line1 = "        ALARM!       "
+			line1 = "ALARM!".center(21)
+			# Display is approx. 21 characters wide
 			# TODO: animate line1 with exploding chevrons
-			l2 = len(current_alarm[1])
-			if l2 < 21:
-				pad = 21 - l2
-				pad_l = pad // 2
-				pad_r = pad - pad_l
-				line2 = pad_l + current_alarm[1] + pad_r
-			else:
-				line2 = current_alarm[1]
+			line2 = current_alarm[1].center(21)
 		else:
 			for alarm in alarms:
 				if alarm[0] not in cancelled_alarms:
