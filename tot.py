@@ -173,7 +173,7 @@ def clock_ticker():
 				if alarm[0] not in cancelled_alarms:
 					global disp_alarm
 					disp_alarm = alarm[0]
-					line1 = alarm[1]
+					line1 = "Next: " + alarm[1]
 					alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
 					if alarm_delta.total_seconds() >= 86400:
 						tag = "%dd" % (alarm_delta.total_seconds() // 86400)
