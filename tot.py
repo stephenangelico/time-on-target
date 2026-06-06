@@ -17,6 +17,7 @@
 import os
 import sys
 import time
+import signal
 import selectors
 import datetime
 import threading
@@ -64,10 +65,19 @@ class _Alert(GPIO._Alert):
 
 GPIO._Alert = _Alert
 
+def stop_alarm(s, f):
+	global current_alarm
+	current_alarm = None
+	global ringer
+	ringer = None
+
+signal.signal(signal.SIGCHLD, stop_alarm)
+
 def ring_alarm(alarm):
 	global ringer
-	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav"])
-	# TODO: Do we need VLC to loop, and if not, what do we do when it terminates?
+	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav", "--play-and-exit"])
+	# Play once and exit. If you want to loop, adjust the command.
+	# Once VLC quits, the alarm will be cancelled automatically.
 	global current_alarm
 	current_alarm = alarm
 
