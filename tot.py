@@ -88,7 +88,7 @@ def cal_sync():
 					d = 30
 				else:
 					d = alarm[3].seconds + 5
-					a = threading.Timer(d-5, ring_alarm)
+					a = threading.Timer(d-5, ring_alarm, args=(alarm))
 					a.start()
 				break
 		time.sleep(d - time.monotonic() + t)
