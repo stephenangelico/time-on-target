@@ -147,6 +147,8 @@ def draw_text(x, y, text):
 		for row, pixels in zip(rows, font):
 			# Updating row which is in rows[] directly updates the display buffer
 			for i, ch in enumerate(pixels):
+				if x + i >= len(row):
+					break # Protect against address range overrun
 				row[x + i] = ch != " "
 				# If the font has something in that pixel, it's high, if blank it's low
 		x += len(font[0]) + font_small.LETTERSPACING
