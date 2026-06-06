@@ -33,7 +33,7 @@ import font_small
 alarms = []
 cancelled_alarms = []
 disp_alarm = ""
-alarm_active = False
+current_alarm = None
 ringer = None
 button_down = None
 latest_press = ""
@@ -64,12 +64,12 @@ class _Alert(GPIO._Alert):
 
 GPIO._Alert = _Alert
 
-def ring_alarm():
+def ring_alarm(alarm):
 	global ringer
 	ringer = subprocess.Popen(["/usr/bin/cvlc", "1.wav"])
 	# TODO: Do we need VLC to loop, and if not, what do we do when it terminates?
-	global alarm_active
-	alarm_active = True
+	global current_alarm
+	current_alarm = alarm
 
 def cal_sync():
 	while True:
@@ -94,10 +94,10 @@ def cal_sync():
 		time.sleep(d - time.monotonic() + t)
 
 def button_held():
-	global alarm_active
-	if alarm_active:
+	global current_alarm
+	if current_alarm:
 		ringer.send_signal(2) # Send Ctrl-C to VLC
-		alarm_active = False
+		current_alarm = None
 	else:
 		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
 		# TODO: Special-case having no alarms
@@ -110,11 +110,11 @@ def button_held():
 			# Uncancel, not sure if we need it though - would need to display cancelled alarms
 
 def button_timer():
-	global button_down
 	global latest_press
 	latest_press = "Hold"
 	button_held()
 	os.write(disp_w, b"u")
+	global button_down
 	button_down = None
 
 def button_listener(chan, level):
@@ -153,9 +153,9 @@ def clock_ticker():
 	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
-		if alarm_active:
+		if current_alarm:
 			pass
-		# TODO: if alarm_active, do not update to the next alarm - display/animate current alarm
+		# TODO: if current_alarm, do not update to the next alarm - display/animate current alarm
 		for alarm in alarms:
 			if alarm[0] not in cancelled_alarms:
 				global disp_alarm
