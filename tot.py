@@ -146,39 +146,48 @@ def button_setup():
 	GPIO.add_event_detect(17, GPIO.BOTH, button_listener, 5)
 
 def clock_ticker():
-	next_time = "00:00 (00h)"
-	next_name = "Very long alarm name"
+	line1 = "Very long alarm name"
+	line2 = "00:00 (00h)"
 	# Listen for signal to update display immediately
 	sel = selectors.DefaultSelector()
 	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
 		if current_alarm:
-			pass
-		# TODO: if current_alarm, do not update to the next alarm - display/animate current alarm
-		for alarm in alarms:
-			if alarm[0] not in cancelled_alarms:
-				global disp_alarm
-				disp_alarm = alarm[0]
-				next_name = alarm[1]
-				alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
-				if alarm_delta.total_seconds() >= 86400:
-					tag = "%dd" % (alarm_delta.total_seconds() // 86400)
-				elif alarm_delta.total_seconds() >= 3600:
-					tag = "%dh" % (alarm_delta.total_seconds() // 3600)
-				elif alarm_delta.total_seconds() >= 60:
-					tag = "%dm" % (alarm_delta.total_seconds() // 60)
-				elif alarm_delta.total_seconds() > 0:
-					tag = "0m"
-				else:
-					tag = "NOW"
-				next_time = (alarm[2].strftime("%d/%m %H:%M") + " (" + tag + ")")
-				break
+			line1 = "        ALARM!       "
+			# TODO: animate line1 with exploding chevrons
+			l2 = len(current_alarm[1])
+			if l2 < 21:
+				pad = 21 - l2
+				pad_l = pad // 2
+				pad_r = pad - pad_l
+				line2 = pad_l + current_alarm[1] + pad_r
+			else:
+				line2 = current_alarm[1]
+		else:
+			for alarm in alarms:
+				if alarm[0] not in cancelled_alarms:
+					global disp_alarm
+					disp_alarm = alarm[0]
+					line1 = alarm[1]
+					alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
+					if alarm_delta.total_seconds() >= 86400:
+						tag = "%dd" % (alarm_delta.total_seconds() // 86400)
+					elif alarm_delta.total_seconds() >= 3600:
+						tag = "%dh" % (alarm_delta.total_seconds() // 3600)
+					elif alarm_delta.total_seconds() >= 60:
+						tag = "%dm" % (alarm_delta.total_seconds() // 60)
+					elif alarm_delta.total_seconds() > 0:
+						tag = "0m"
+					else:
+						tag = "NOW"
+					line2 = (alarm[2].strftime("%d/%m %H:%M") + " (" + tag + ")")
+					break
 		matrix_lcd.clear_display()
 		first_row = font_small.ASCENDER + font_small.BASE - 1 # Zero-base addressing
 		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"))
-		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), next_name)
-		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), next_time)
+		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), line1)
+		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
 		matrix_lcd.update()
 		if sel.select(0.5 - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout (0.5sec minus draw time) or a signal
