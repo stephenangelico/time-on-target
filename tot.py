@@ -158,6 +158,7 @@ def button_setup():
 def clock_ticker():
 	line1 = "Very long alarm name"
 	line2 = "00:00 (00h)"
+	# TODO: display loading/error
 	# Listen for signal to update display immediately
 	sel = selectors.DefaultSelector()
 	sel.register(disp_r, selectors.EVENT_READ)
