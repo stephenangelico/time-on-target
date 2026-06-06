@@ -32,7 +32,7 @@ import font_small
 
 alarms = []
 cancelled_alarms = []
-current_alarm = ""
+disp_alarm = ""
 alarm_active = False
 ringer = None
 button_down = None
@@ -102,11 +102,12 @@ def button_held():
 		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
 		# TODO: Special-case having no alarms
 		# TODO: Check in gcal.py if 5 alarms is enough
-		if current_alarm not in cancelled_alarms:
-			cancelled_alarms.append(current_alarm)
-			print("Alarm", current_alarm, "cancelled")
+		if disp_alarm not in cancelled_alarms:
+			cancelled_alarms.append(disp_alarm)
+			print("Alarm", disp_alarm, "cancelled")
 		else:
-			cancelled_alarms.remove(current_alarm) # Uncancel, not sure if we need it though
+			cancelled_alarms.remove(disp_alarm)
+			# Uncancel, not sure if we need it though - would need to display cancelled alarms
 
 def button_timer():
 	global button_down
@@ -152,11 +153,13 @@ def clock_ticker():
 	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
+		if alarm_active:
+			pass
 		# TODO: if alarm_active, do not update to the next alarm - display/animate current alarm
 		for alarm in alarms:
 			if alarm[0] not in cancelled_alarms:
-				global current_alarm
-				current_alarm = alarm[0]
+				global disp_alarm
+				disp_alarm = alarm[0]
 				next_name = alarm[1]
 				alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
 				if alarm_delta.total_seconds() >= 86400:
