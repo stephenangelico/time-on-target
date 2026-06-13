@@ -194,6 +194,8 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), line1)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
+		for i in range(5):
+			matrix_lcd.display[first_row + font_small.ADVANCEMENT + i][28] = 1
 		matrix_lcd.update()
 		if sel.select(0.5 - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout (0.5sec minus draw time) or a signal
 
