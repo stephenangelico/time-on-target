@@ -169,6 +169,7 @@ def clock_ticker():
 	sel.register(disp_r, selectors.EVENT_READ)
 	while True:
 		t = time.monotonic()
+		refresh_time = 0.5 # 2FPS when idle
 		if current_alarm:
 			line1 = "ALARM!".center(21)
 			# Display is approx. 21 characters wide
@@ -200,13 +201,14 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
 		if anim_chevron_time:
+			refresh_time = min(refresh_time, 0.025) # 40FPS
 			frame = int((time.monotonic() - anim_chevron_time) / 0.025)
 			phase = frame % 64
 			for i in range(5):
 				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 - phase] = 1
 				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 + phase] = 1
 		matrix_lcd.update()
-		if sel.select(0.5 - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout (0.5sec minus draw time) or a signal
+		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
 
 def cleanup():
 	matrix_lcd.cleanup() # Includes GPIO cleanup
