@@ -90,6 +90,12 @@ def set_z(addr):
 	set_di("data")
 
 def set_output_pin(pin, state):
+	"""
+	Sets output pins if they are different to their prior state.
+	Greatly optimized over naively setting each output regardless of state -
+	calling GPIO.output does take an appreciable amount of time when you're doing
+	it 8192 times per display blit.
+	"""
 	if data_state[pin] == state: return # No need to set it to what it already is
 	GPIO.output(data_pins[pin], state)
 	data_state[pin] = state
