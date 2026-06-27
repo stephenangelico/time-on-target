@@ -36,6 +36,7 @@ cancelled_alarms = []
 disp_alarm = ""
 current_alarm = None
 ringer = None
+anim_chevron_time = 0
 button_down = None
 latest_press = ""
 disp_r, disp_w = os.pipe() # Signal to update display immediately
@@ -70,6 +71,8 @@ def stop_alarm(s, f):
 	current_alarm = None
 	global ringer
 	ringer = None
+	global anim_chevron_time
+	anim_chevron_time = 0
 
 signal.signal(signal.SIGCHLD, stop_alarm)
 
@@ -80,6 +83,8 @@ def ring_alarm(alarm):
 	# Once VLC quits, the alarm will be cancelled automatically.
 	global current_alarm
 	current_alarm = alarm
+	global anim_chevron_time
+	anim_chevron_time = time.monotonic()
 
 def cal_sync():
 	while True:
@@ -194,8 +199,12 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), line1)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
-		for i in range(5):
-			matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][28] = 1
+		if anim_chevron_time:
+			frame = (time.monotonic() - anim_chevron_time) // 0.025
+			phase = frame % 64
+			for i in range(5):
+				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 - phase] = 1
+				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 + phase] = 1
 		matrix_lcd.update()
 		if sel.select(0.5 - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout (0.5sec minus draw time) or a signal
 
