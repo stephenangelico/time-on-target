@@ -201,13 +201,16 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 3), latest_press) # Demo only, will no longer work when big_font is used
 		if anim_chevron_time:
-			refresh_time = min(refresh_time, 0.025) # 40FPS
+			refresh_time = min(refresh_time, 0.1) # 10FPS
 			frame = int((time.monotonic() - anim_chevron_time) / 0.025)
 			phase = frame % 64
-			for i in range(5):
+			for i in range(8):
 				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 - phase] = 1
+				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][65 - phase] = 1
 				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][64 + phase] = 1
+				matrix_lcd.display[first_row + font_small.LEADING + font_small.DESCENDER + i + 1][63 + phase] = 1
 		matrix_lcd.update()
+		#print(time.monotonic() - t)
 		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
 
 def cleanup():
