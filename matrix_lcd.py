@@ -22,6 +22,7 @@ class Pin(IntEnum):
 	RST = 18 # Reset
 
 data_pins = (Pin.DB7, Pin.DB6, Pin.DB5, Pin.DB4, Pin.DB3, Pin.DB2, Pin.DB1, Pin.DB0)
+data_state = [None] * len(data_pins)
 
 # Display buffer - 64 rows (arrays) of 128 pixels
 def clear_display():
@@ -58,6 +59,7 @@ def set_rw(mode):
 		GPIO.output(Pin.RW, 0)
 		for pin in data_pins:
 			GPIO.setup(pin, GPIO.OUT)
+		data_state[:] = [None] * len(data_pins)
 
 def pulse_enable():
 	GPIO.output(Pin.EN, 1)
@@ -87,6 +89,11 @@ def set_z(addr):
 	send_byte(0b11000000 + addr)
 	set_di("data")
 
+def set_output_pin(pin, state):
+	if data_state[pin] == state: return # No need to set it to what it already is
+	GPIO.output(data_pins[pin], state)
+	data_state[pin] = state
+
 def status_read():
 	"""
 	Read the status of the currently selected segment controller(s)
@@ -109,8 +116,8 @@ def status_read():
 def send_byte(databyte):
 	# Send a byte of data/instruction to the display, pulse_enable and wait until no longer busy
 	# Note that you must set register select, R/W and column select BEFORE using this function.
-	for pin, state in zip(data_pins, f"{databyte:08b}"):
-		GPIO.output(pin, state == "1")
+	for pin, state in enumerate(f"{databyte:08b}"):
+		set_output_pin(pin, state == "1")
 		# Byte must be given in binary. Bits are stringified and zipped with data pins
 		# For any pin, if state is the string "0", comparing against the string "1"
 		# will be false and thus set the pin state to low.
@@ -176,8 +183,8 @@ def update():
 			with cs(chip):
 				base = 64 if chip == 2 else 0
 				for c in range(64):
-					for i, pin in enumerate(data_pins):
-						GPIO.output(pin, display[r+7-i][base + c])
+					for i in range(8):
+						set_output_pin(i, display[r+7-i][base + c])
 					pulse_enable()
 
 def init():
