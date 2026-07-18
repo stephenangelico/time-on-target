@@ -201,11 +201,11 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		if anim_chevron_time:
 			refresh_time = min(refresh_time, 0.1) # 10FPS
-			frame = int((time.monotonic() - anim_chevron_time) / 0.025)
+			frame = int((time.monotonic() - anim_chevron_time) / 0.1)
 			phase = frame % 64
 			# TODO: Flash button LED in time with animation
 			chevron_scale = 4 # Chevron height is 2 * chevron_scale - 1
-			chevron_width = 2
+			chevron_width = 3
 			anim_base_y = first_row + font_small.LEADING + font_small.DESCENDER + chevron_scale + 1
 			for i in range(4):
 				for j in range (i and -1, chevron_width + 1):
