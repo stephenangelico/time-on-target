@@ -205,12 +205,14 @@ def clock_ticker():
 			phase = frame % 64
 			# TODO: Flash button LED in time with animation
 			chevron_scale = 4 # Chevron height is 2 * chevron_scale - 1
+			chevron_width = 2
 			anim_base_y = first_row + font_small.LEADING + font_small.DESCENDER + chevron_scale + 1
-			for i in range(3):
-				#matrix_lcd.display[anim_base_y - i][64 - phase] = 1
-				#matrix_lcd.display[anim_base_y + i][64 - phase] = 1
-				matrix_lcd.display[anim_base_y - i][64 - i + phase] = 1
-				matrix_lcd.display[anim_base_y + i][64 - i + phase] = 1
+			for i in range(4):
+				for j in range (i and -1, chevron_width + 1):
+					matrix_lcd.display[anim_base_y - i][64 + j + i - phase] = 0 < j < chevron_width
+					matrix_lcd.display[anim_base_y + i][64 + j + i - phase] = 0 < j < chevron_width
+					matrix_lcd.display[anim_base_y - i][64 - j - i + phase] = 0 < j < chevron_width
+					matrix_lcd.display[anim_base_y + i][64 - j - i + phase] = 0 < j < chevron_width
 		matrix_lcd.update()
 		#print(time.monotonic() - t)
 		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
