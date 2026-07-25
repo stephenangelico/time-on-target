@@ -210,7 +210,7 @@ def clock_ticker():
 			chevron_width = 2
 			anim_base_y = first_row + font_small.LEADING + font_small.DESCENDER + chevron_scale + 1
 			for i in range(4):
-				for j in range (i and -1, chevron_width + 1):
+				for j in range (i and -2, chevron_width + 2):
 					matrix_lcd.display[anim_base_y - i][60 + j + i - phase] = 0 <= j < chevron_width
 					matrix_lcd.display[anim_base_y + i][60 + j + i - phase] = 0 <= j < chevron_width
 					matrix_lcd.display[anim_base_y - i][68 - j - i + phase] = 0 <= j < chevron_width
