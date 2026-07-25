@@ -29,6 +29,10 @@ def clear_display():
 	display[:] = [[0] * 128 for _ in range(64)]
 display = []; clear_display()
 
+def set_pixel(row, col, state):
+	if 0 <= row < len(display) and 0 <= col < len(display[0]):
+		display[row][col] = state
+
 def set_cs(chip):
 	GPIO.output(Pin.CS1, chip == 1 or chip == 3)
 	GPIO.output(Pin.CS2, chip == 2 or chip == 3)
