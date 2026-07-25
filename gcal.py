@@ -19,7 +19,7 @@ CAL_ID = "c7dcbe3c08317dc9ee67fa66d37d67dcf5d8ce265a2ee4c292fb43027649bbeb@group
 force_events = []
 if "TOT_SIMULATE_EVENT" in os.environ:
 	# Fake an event with the given description, one time only
-	event_time = datetime.datetime.now().astimezone() + datetime.timedelta(seconds=10)
+	event_time = datetime.datetime.now().astimezone() + datetime.timedelta(seconds=5)
 	force_events = [("synth-event-id", os.environ["TOT_SIMULATE_EVENT"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC)))]
 
 def main():
