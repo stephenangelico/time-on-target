@@ -211,10 +211,10 @@ def clock_ticker():
 			anim_base_y = first_row + font_small.LEADING + font_small.DESCENDER + chevron_scale
 			for i in range(chevron_scale):
 				for j in range (i and -2, chevron_width + 2):
-					matrix_lcd.display[anim_base_y - i][60 + j + i - phase] = 0 <= j < chevron_width
-					matrix_lcd.display[anim_base_y + i][60 + j + i - phase] = 0 <= j < chevron_width
-					matrix_lcd.display[anim_base_y - i][68 - j - i + phase] = 0 <= j < chevron_width
-					matrix_lcd.display[anim_base_y + i][68 - j - i + phase] = 0 <= j < chevron_width
+					matrix_lcd.set_pixel(anim_base_y - i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_base_y + i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_base_y - i, 68 - j - i + phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_base_y + i, 68 - j - i + phase, 0 <= j < chevron_width)
 		matrix_lcd.update()
 		#print(time.monotonic() - t)
 		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
