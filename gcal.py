@@ -16,7 +16,15 @@ SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 CAL_ID = "c7dcbe3c08317dc9ee67fa66d37d67dcf5d8ce265a2ee4c292fb43027649bbeb@group.calendar.google.com"
 # How to get calendar ID (After building service): service.calendarList().list().execute()
 
+force_events = []
+if "TOT_SIMULATE_EVENT" in os.environ:
+	# Fake an event with the given description, one time only
+	event_time = datetime.datetime.now().astimezone() + datetime.timedelta(seconds=10)
+	force_events = [("synth-event-id", os.environ["TOT_SIMULATE_EVENT"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC)))]
+
 def main():
+	if force_events:
+		return [force_events.pop()]
 	creds = None
 	if os.path.exists("token.json"): # Keep it simple if we have what we need
 		creds = Credentials.from_authorized_user_file("token.json", SCOPES)
