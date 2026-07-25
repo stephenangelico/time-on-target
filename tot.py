@@ -200,7 +200,7 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), line1)
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		if anim_chevron_time:
-			refresh_time = min(refresh_time, 0.1) # 10FPS
+			refresh_time = min(refresh_time, 0.25) # 4FPS
 			frame = int((time.monotonic() - anim_chevron_time) / 0.1)
 			phase = frame % 64
 			# TODO: Flash button LED in time with animation
