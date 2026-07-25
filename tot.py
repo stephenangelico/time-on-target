@@ -201,7 +201,8 @@ def clock_ticker():
 		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
 		if anim_chevron_time:
 			refresh_time = min(refresh_time, 0.25) # 4FPS
-			frame = int((time.monotonic() - anim_chevron_time) / 0.1)
+			frame = int((time.monotonic() - anim_chevron_time) / 0.025) # Frames since alarm animation started
+			# Animation speed is 1 frame every x seconds, where x is the divisor
 			phase = frame % 64
 			# TODO: Flash button LED in time with animation
 			chevron_scale = 4 # Chevron height is 2 * chevron_scale - 1
