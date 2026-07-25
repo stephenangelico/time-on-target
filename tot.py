@@ -196,9 +196,11 @@ def clock_ticker():
 					break
 		matrix_lcd.clear_display()
 		first_row = font_small.ASCENDER + font_small.BASE - 1 # Zero-base addressing
+		second_row = first_row + font_small.ADVANCEMENT
+		third_row = first_row + font_small.ADVANCEMENT * 2
 		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"))
-		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT), line1)
-		matrix_lcd.draw_text(0, (first_row + font_small.ADVANCEMENT * 2), line2)
+		matrix_lcd.draw_text(0, second_row, line1)
+		matrix_lcd.draw_text(0, third_row, line2)
 		if anim_chevron_time:
 			refresh_time = min(refresh_time, 0.25) # 4FPS
 			frame = int((time.monotonic() - anim_chevron_time) / 0.025) # Frames since alarm animation started
@@ -215,6 +217,7 @@ def clock_ticker():
 					matrix_lcd.set_pixel(anim_base_y + i, 60 + j + i - phase, 0 <= j < chevron_width)
 					matrix_lcd.set_pixel(anim_base_y - i, 68 - j - i + phase, 0 <= j < chevron_width)
 					matrix_lcd.set_pixel(anim_base_y + i, 68 - j - i + phase, 0 <= j < chevron_width)
+					# TODO: Do it again (on the next line)
 		matrix_lcd.update()
 		#print(time.monotonic() - t)
 		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
