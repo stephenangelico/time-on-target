@@ -67,12 +67,13 @@ class _Alert(GPIO._Alert):
 GPIO._Alert = _Alert
 
 def stop_alarm(s, f):
-	global current_alarm
-	current_alarm = None
 	global ringer
-	ringer = None
-	global anim_chevron_time
-	anim_chevron_time = 0
+	if ringer and ringer.poll() is not None:
+		global current_alarm
+		current_alarm = None
+		ringer = None
+		global anim_chevron_time
+		anim_chevron_time = 0
 
 signal.signal(signal.SIGCHLD, stop_alarm)
 
