@@ -49,7 +49,7 @@ def main():
 					# to just run gcal.py from a desktop and copy the new token.json over.
 					print("Error: Re-auth required. Manually run gcal.py from a desktop and copy the new token.json over.", file=sys.stderr)
 					# TODO: Automate this a little more - check if Raptor has something newer and copy?
-					sys.exit() # Nothing further we can do right now until we get new credentials
+					return [] # Nothing further we can do right now until we get new credentials
 		else: # If we don't have creds, get them.
 			print("Credentials not found, re-authenicating...")
 			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
