@@ -90,6 +90,7 @@ def ring_alarm(alarm):
 def cal_sync():
 	while True:
 		t = time.monotonic()
+		d = 5
 		global alarms
 		alarms = gcal.main()
 		for alarm in alarms:
