@@ -163,8 +163,8 @@ def button_setup():
 	GPIO.add_event_detect(17, GPIO.BOTH, button_listener, 5)
 
 def clock_ticker():
-	line1 = "Very long alarm name"
-	line2 = "00:00 (00h)"
+	line1 = "Connecting to GCal..."
+	line2 = ""
 	# TODO: display loading/error
 	# Listen for signal to update display immediately
 	sel = selectors.DefaultSelector()
