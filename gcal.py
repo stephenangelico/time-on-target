@@ -1,12 +1,8 @@
 # Google Calendar integration module
 import os
-import sys
 import datetime
-import webbrowser
 
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import googleapiclient.errors
 import google.auth.exceptions
@@ -25,43 +21,9 @@ if "TOT_SIMULATE_EVENT" in os.environ:
 def main():
 	if force_events:
 		return [force_events.pop()]
-	creds = None
-	if os.path.exists("token.json"): # Keep it simple if we have what we need
-		creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-	if not creds or not creds.valid: # Do we have a problem with credentials?
-		if creds and creds.expired and creds.refresh_token: # Do we have old creds or no creds?
-			# Refresh tokens seem to expire, requiring full reauth, but we don't know how long
-			# before they expire. A check-in every 15 minutes may also mitigate this, as other
-			# projects (see Rosuav/LetMeKnow) don't seem to need this rigmarole.
-			try:
-				print("Token out of date, refreshing...")
-				creds.refresh(Request()) # If they're old, refresh them.
-			except google.auth.exceptions.RefreshError:
-				# If they're expired, reauth.
-				try:
-					print("Error refreshing token, attempting re-auth...")
-					flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-					creds = flow.run_local_server(port=0)
-				except webbrowser.Error:
-					# If this is running on the Pi, we can't open the OAuth page in browser,
-					# and if we could somehow trigger the page to open on a desktop, the redirect
-					# wouldn't work. Therefore, it is much easier for a hopefully rare situation
-					# to just run gcal.py from a desktop and copy the new token.json over.
-					print("Error: Re-auth required. Manually run gcal.py from a desktop and copy the new token.json over.", file=sys.stderr)
-					# TODO: Automate this a little more - check if Raptor has something newer and copy?
-					return [] # Nothing further we can do right now until we get new credentials
-		else: # If we don't have creds, get them.
-			print("Credentials not found, re-authenicating...")
-			flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-			# If you don't have the credentials from the Google Cloud Console, there
-			# is nothing to be done here. I could make the error prettier but why.
-			creds = flow.run_local_server(port=0)
-			# This only works on a machine with a browser - it is not easy to use a flow
-			# more suitable for a headless system.
-			# Because of the aforementioned refresh token expiry, manual reauth will be
-			# necessary in dev until TOT runs perpetually.
-		with open("token.json", "w") as token: # Save creds if we got them
-			token.write(creds.to_json())
+	creds = Credentials.from_service_account_file("TOT-service-key.json", scopes=SCOPES)
+	# TODO: Error handling (SURELY it can't be this easy, right?)
+	# TODO: Document setup as it is now in Google Cloud Console
 	service = build("calendar", "v3", credentials=creds)
 	now = datetime.datetime.now(tz=datetime.UTC).isoformat()
 	# Don't reuse this - GCal call may take time
