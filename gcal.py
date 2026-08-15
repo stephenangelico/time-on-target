@@ -29,7 +29,7 @@ def main():
 	service = build("calendar", "v3", credentials=creds)
 	now = datetime.datetime.now(tz=datetime.UTC).isoformat()
 	# Don't reuse this - GCal call may take time
-	events = service.events().list(calendarId=CAL_ID, timeMin=now, singleEvents=True, maxResults=5, orderBy="startTime").execute()
+	events = service.events().list(calendarId=CAL_ID, timeMin=now, singleEvents=True, maxResults=15, orderBy="startTime").execute()
 	alarms = []
 	for event in events["items"]:
 		event_time = datetime.datetime.fromisoformat(event["start"]["dateTime"])
