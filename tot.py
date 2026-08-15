@@ -39,6 +39,7 @@ ringer = None
 anim_chevron_time = 0
 button_down = None
 latest_press = ""
+cal_status = "Loading..." # None if all is well, error message otherwise
 disp_r, disp_w = os.pipe() # Signal to update display immediately
 
 # Copied from RPi.GPIO.__init__.py
@@ -89,25 +90,37 @@ def ring_alarm(alarm):
 
 def cal_sync():
 	while True:
-		t = time.monotonic()
-		d = 900
-		global alarms
-		alarms = gcal.main()
-		for alarm in alarms:
-			if alarm[0] not in cancelled_alarms:
-				if alarm[3].seconds > 1800:
-					d = 900
-				elif alarm[3].seconds > 900:
-					d = 300
-				elif alarm[3].seconds > 300:
-					d = 60
-				elif alarm[3].seconds > 60:
-					d = 30
-				else:
-					d = alarm[3].seconds + 5
-					a = threading.Timer(d-5, ring_alarm, args=(alarm,))
-					a.start()
-				break
+		try:
+			t = time.monotonic()
+			d = 900 # Don't spam Google servers if there are no alarms
+			global alarms
+			global cal_status
+			alarms = gcal.main()
+			for alarm in alarms:
+				if alarm[0] not in cancelled_alarms:
+					# Graduated re-check times in case of last minute changes
+					if alarm[3].seconds > 1800:
+						d = 900
+						# Every 15 minutes if more than 30 min out
+					elif alarm[3].seconds > 900:
+						d = 300
+						# Every 5 minutes if 15-30 min out
+					elif alarm[3].seconds > 300:
+						d = 60
+						# Every minute if 5-15 min out
+					elif alarm[3].seconds > 60:
+						d = 30
+						# Every 30 sec if 1-5 min out
+					else:
+						d = alarm[3].seconds + 5
+						# Exact time remaining if less than a minute out
+						a = threading.Timer(d-5, ring_alarm, args=(alarm,))
+						a.start()
+					break
+			cal_status = None
+		except Exception as e:
+			cal_status = "Error: " + str(e)
+			d = 60 # Try again soon but not immediately
 		time.sleep(d - time.monotonic() + t)
 
 def button_held():
@@ -163,9 +176,6 @@ def button_setup():
 	GPIO.add_event_detect(17, GPIO.BOTH, button_listener, 5)
 
 def clock_ticker():
-	line1 = "Connecting to GCal..."
-	line2 = ""
-	# TODO: display loading/error
 	# Listen for signal to update display immediately
 	sel = selectors.DefaultSelector()
 	sel.register(disp_r, selectors.EVENT_READ)
@@ -175,27 +185,30 @@ def clock_ticker():
 		if current_alarm:
 			line1 = "ALARM!".center(21)
 			# Display is approx. 21 characters wide
-			# TODO: animate line1 with exploding chevrons
 			line2 = current_alarm[1].center(21)
 		else:
-			for alarm in alarms:
-				if alarm[0] not in cancelled_alarms:
-					global disp_alarm
-					disp_alarm = alarm[0]
-					line1 = "Next: " + alarm[1]
-					alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
-					if alarm_delta.total_seconds() >= 86400:
-						tag = "%dd" % (alarm_delta.total_seconds() // 86400)
-					elif alarm_delta.total_seconds() >= 3600:
-						tag = "%dh" % (alarm_delta.total_seconds() // 3600)
-					elif alarm_delta.total_seconds() >= 60:
-						tag = "%dm" % (alarm_delta.total_seconds() // 60)
-					elif alarm_delta.total_seconds() > 0:
-						tag = "0m"
-					else:
-						tag = "NOW"
-					line2 = (alarm[2].strftime("%d/%m %H:%M") + " (" + tag + ")")
-					break
+			if cal_status:
+				line1 = cal_status
+				line2 = ""
+			else:
+				for alarm in alarms:
+					if alarm[0] not in cancelled_alarms:
+						global disp_alarm
+						disp_alarm = alarm[0]
+						line1 = "Next: " + alarm[1]
+						alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
+						if alarm_delta.total_seconds() >= 86400:
+							tag = "%dd" % (alarm_delta.total_seconds() // 86400)
+						elif alarm_delta.total_seconds() >= 3600:
+							tag = "%dh" % (alarm_delta.total_seconds() // 3600)
+						elif alarm_delta.total_seconds() >= 60:
+							tag = "%dm" % (alarm_delta.total_seconds() // 60)
+						elif alarm_delta.total_seconds() > 0:
+							tag = "0m"
+						else:
+							tag = "NOW"
+						line2 = (alarm[2].strftime("%d/%m %H:%M") + " (" + tag + ")")
+						break
 		matrix_lcd.clear_display()
 		first_row = font_small.ASCENDER + font_small.BASE - 1 # Zero-base addressing
 		second_row = first_row + font_small.ADVANCEMENT
