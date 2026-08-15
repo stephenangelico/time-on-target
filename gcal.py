@@ -19,10 +19,12 @@ if "TOT_SIMULATE_EVENT" in os.environ:
 	force_events = [("synth-event-id", os.environ["TOT_SIMULATE_EVENT"], event_time, (event_time - datetime.datetime.now(tz=datetime.UTC)))]
 
 def main():
+	# Error handling is to all be done in tot.py - that way it can be
+	# displayed on the LCD. If you are running gcal standalone, you have a
+	# console and don't need error handling.
 	if force_events:
 		return [force_events.pop()]
 	creds = Credentials.from_service_account_file("TOT-service-key.json", scopes=SCOPES)
-	# TODO: Error handling (SURELY it can't be this easy, right?)
 	# TODO: Document setup as it is now in Google Cloud Console
 	service = build("calendar", "v3", credentials=creds)
 	now = datetime.datetime.now(tz=datetime.UTC).isoformat()
