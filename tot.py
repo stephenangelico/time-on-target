@@ -33,6 +33,7 @@ import font_small
 
 alarms = []
 cancelled_alarms = []
+next_alarm = None
 disp_alarm = ""
 current_alarm = None
 ringer = None
@@ -100,9 +101,12 @@ def cal_sync():
 				cal_status = "No alarms set"
 				global disp_alarm
 				disp_alarm = ""
+				global next_alarm
+				next_alarm = None
 			else:
 				for alarm in alarms:
 					if alarm[0] not in cancelled_alarms:
+						next_alarm = alarm
 						# Graduated re-check times in case of last minute changes
 						if alarm[3].seconds > 1800:
 							d = 900
@@ -204,6 +208,7 @@ def clock_ticker():
 					if alarm[0] not in cancelled_alarms:
 						global disp_alarm
 						disp_alarm = alarm[0]
+						# TODO: use button press to cycle through alarms
 						line1 = "Next: " + alarm[1]
 						alarm_delta = alarm[2] - datetime.datetime.now(tz=datetime.UTC)
 						if alarm_delta.total_seconds() >= 86400:
