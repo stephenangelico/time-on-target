@@ -66,11 +66,11 @@ X X X   X     X    XXX  X  X  XXXX  XXXX     X   XXX   XXXX
 XX  X   X    X        X XXXXX     X X   X    X  X   X     X
 X   X   X   X     X   X    X  X   X X   X   X   X   X     X
  XXX   XXX  XXXXX  XXX     X   XXX   XXX    X    XXX      X""")
-_make_font("""()!?
-   X   X      X    XXX 
-  X     X     X   X   X
- X       X    X       X 
- X       X    X      X 
- X       X    X     X  
-  X     X              
-   X   X      X     X  """)
+_make_font("""()[]!?
+   X   X     XXX   XXX    X    XXX 
+  X     X    X       X    X   X   X
+ X       X   X       X    X       X 
+ X       X   X       X    X      X 
+ X       X   X       X    X     X  
+  X     X    X       X             
+   X   X     XXX   XXX    X     X  """)
