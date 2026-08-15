@@ -225,6 +225,7 @@ def clock_ticker():
 						break
 		matrix_lcd.clear_display()
 		first_row = font_small.ASCENDER + font_small.BASE - 1 # Zero-base addressing
+		# TODO: Use either font_large or font_big here - CHECK matrix_lcd.py
 		second_row = first_row + font_small.ADVANCEMENT
 		third_row = first_row + font_small.ADVANCEMENT * 2
 		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"))
