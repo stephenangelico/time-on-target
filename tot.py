@@ -39,7 +39,7 @@ ringer = None
 anim_chevron_time = 0
 button_down = None
 latest_press = ""
-cal_status = "Loading..." # None if all is well, error message otherwise
+cal_status = "Connecting to GCal..." # None if all is well, error message otherwise
 disp_r, disp_w = os.pipe() # Signal to update display immediately
 
 # Copied from RPi.GPIO.__init__.py
@@ -188,8 +188,14 @@ def clock_ticker():
 			line2 = current_alarm[1].center(21)
 		else:
 			if cal_status:
-				line1 = cal_status
-				line2 = ""
+				if len(cal_status) > 21:
+					cut = cal_status.rfind(" ", 10, 20)
+					if cut == -1: cut = 20
+					line1 = cal_status[:cut]
+					line2 = cal_status[cut+1:]
+				else:
+					line1 = cal_status
+					line2 = ""
 			else:
 				for alarm in alarms:
 					if alarm[0] not in cancelled_alarms:
