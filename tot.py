@@ -212,14 +212,18 @@ def clock_ticker():
 			# TODO: Flash button LED in time with animation
 			chevron_scale = 4 # Chevron height is 2 * chevron_scale - 1
 			chevron_width = 2
-			anim_base_y = second_row - chevron_scale + 1
+			anim_row2 = second_row - chevron_scale + 1
+			anim_row3 = third_row - chevron_scale + 1
 			for i in range(chevron_scale):
 				for j in range (i and -2, chevron_width + 2):
-					matrix_lcd.set_pixel(anim_base_y - i, 60 + j + i - phase, 0 <= j < chevron_width)
-					matrix_lcd.set_pixel(anim_base_y + i, 60 + j + i - phase, 0 <= j < chevron_width)
-					matrix_lcd.set_pixel(anim_base_y - i, 68 - j - i + phase, 0 <= j < chevron_width)
-					matrix_lcd.set_pixel(anim_base_y + i, 68 - j - i + phase, 0 <= j < chevron_width)
-					# TODO: Do it again (on the next line)
+					matrix_lcd.set_pixel(anim_row2 - i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row2 + i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row2 - i, 68 - j - i + phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row2 + i, 68 - j - i + phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row3 - i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row3 + i, 60 + j + i - phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row3 - i, 68 - j - i + phase, 0 <= j < chevron_width)
+					matrix_lcd.set_pixel(anim_row3 + i, 68 - j - i + phase, 0 <= j < chevron_width)
 		matrix_lcd.update()
 		#print(time.monotonic() - t)
 		if sel.select(refresh_time - time.monotonic() + t): os.read(disp_r, 1) # Wait either for timeout or a signal
