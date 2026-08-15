@@ -96,28 +96,33 @@ def cal_sync():
 			global alarms
 			global cal_status
 			alarms = gcal.main()
-			for alarm in alarms:
-				if alarm[0] not in cancelled_alarms:
-					# Graduated re-check times in case of last minute changes
-					if alarm[3].seconds > 1800:
-						d = 900
-						# Every 15 minutes if more than 30 min out
-					elif alarm[3].seconds > 900:
-						d = 300
-						# Every 5 minutes if 15-30 min out
-					elif alarm[3].seconds > 300:
-						d = 60
-						# Every minute if 5-15 min out
-					elif alarm[3].seconds > 60:
-						d = 30
-						# Every 30 sec if 1-5 min out
-					else:
-						d = alarm[3].seconds + 5
-						# Exact time remaining if less than a minute out
-						a = threading.Timer(d-5, ring_alarm, args=(alarm,))
-						a.start()
-					break
-			cal_status = None
+			if not alarms:
+				cal_status = "No alarms set"
+				global disp_alarm
+				disp_alarm = ""
+			else:
+				for alarm in alarms:
+					if alarm[0] not in cancelled_alarms:
+						# Graduated re-check times in case of last minute changes
+						if alarm[3].seconds > 1800:
+							d = 900
+							# Every 15 minutes if more than 30 min out
+						elif alarm[3].seconds > 900:
+							d = 300
+							# Every 5 minutes if 15-30 min out
+						elif alarm[3].seconds > 300:
+							d = 60
+							# Every minute if 5-15 min out
+						elif alarm[3].seconds > 60:
+							d = 30
+							# Every 30 sec if 1-5 min out
+						else:
+							d = alarm[3].seconds + 5
+							# Exact time remaining if less than a minute out
+							a = threading.Timer(d-5, ring_alarm, args=(alarm,))
+							a.start()
+						break
+				cal_status = None
 		except Exception as e:
 			cal_status = "Error: " + str(e)
 			d = 60 # Try again soon but not immediately
@@ -130,8 +135,6 @@ def button_held():
 		current_alarm = None
 	else:
 		# TODO: Only allow alarms to be cancelled within 1hr of ringing (do nothing otherwise)
-		# TODO: Special-case having no alarms
-		# TODO: Check in gcal.py if 5 alarms is enough
 		if disp_alarm not in cancelled_alarms:
 			cancelled_alarms.append(disp_alarm)
 			print("Alarm", disp_alarm, "cancelled")
