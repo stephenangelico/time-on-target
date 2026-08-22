@@ -146,7 +146,7 @@ def fill(databyte):
 				pulse_enable()
 		set_x(0)
 
-def draw_text(x, y, text, * font=font_small):
+def draw_text(x, y, text, *, font=font_small):
 	"""Draw text with its baseline starting at (x,y)"""
 	# X and Y positions here refer to cartesian coordinates, as distinct from the mode used by the
 	# display for addressing.
