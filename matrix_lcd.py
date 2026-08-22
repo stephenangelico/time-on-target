@@ -3,6 +3,8 @@ import time
 from enum import IntEnum
 import RPi.GPIO as GPIO
 import font_small
+import font_large
+import font_big
 
 # Pin GPIO numbers
 class Pin(IntEnum):
@@ -144,23 +146,23 @@ def fill(databyte):
 				pulse_enable()
 		set_x(0)
 
-def draw_text(x, y, text):
+def draw_text(x, y, text, * font=font_small):
 	"""Draw text with its baseline starting at (x,y)"""
 	# X and Y positions here refer to cartesian coordinates, as distinct from the mode used by the
 	# display for addressing.
-	rows = display[y - font_small.ASCENDER - font_small.BASE + 1 : y + font_small.DESCENDER + 1]
+	rows = display[y - font.ASCENDER - font.BASE + 1 : y + font.DESCENDER + 1]
 	# Rows aren't a convenient 8 pixels aligning with display X addresses, we need more height
 	# so we define our own rows.
 	for char in text:
 		try:
-			font = font_small.FONT[char]
+			glyph = font.FONT[char]
 			# Render character from global font
 		except KeyError:
 			# Fallback modes
 			try:
-				font = font_small.FONT[char.upper()]
+				glyph = font.FONT[char.upper()]
 			except KeyError:
-				font = font_small.FONT[" "]
+				glyph = font.FONT[" "]
 		for row, pixels in zip(rows, font):
 			# Updating row which is in rows[] directly updates the display buffer
 			for i, ch in enumerate(pixels):
@@ -168,8 +170,8 @@ def draw_text(x, y, text):
 					break # Protect against address range overrun
 				row[x + i] = ch != " "
 				# If the font has something in that pixel, it's high, if blank it's low
-		x += len(font[0]) + font_small.LETTERSPACING
-		# Width of character (character is a list of rows - len(font) is height)
+		x += len(glyph[0]) + font.LETTERSPACING
+		# Width of character (character is a list of rows - len(glyph) would be height)
 
 def ellipse(inner, outer):
 	for r, row in enumerate(display):
