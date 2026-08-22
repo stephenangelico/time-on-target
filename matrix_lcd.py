@@ -163,13 +163,13 @@ def draw_text(x, y, text, *, font=font_small):
 				glyph = font.FONT[char.upper()]
 			except KeyError:
 				glyph = font.FONT[" "]
-		for row, pixels in zip(rows, font):
+		for row, pixels in zip(rows, glyph):
 			# Updating row which is in rows[] directly updates the display buffer
 			for i, ch in enumerate(pixels):
 				if x + i >= len(row):
 					break # Protect against address range overrun
 				row[x + i] = ch != " "
-				# If the font has something in that pixel, it's high, if blank it's low
+				# If the glyph has something in that pixel, it's high, if blank it's low
 		x += len(glyph[0]) + font.LETTERSPACING
 		# Width of character (character is a list of rows - len(glyph) would be height)
 
