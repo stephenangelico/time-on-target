@@ -16,11 +16,18 @@ FONT = {
 	":": [ # Slightly narrower than digits
 		"        ",
 		"        ",
+		"        ",
+		"        ",
+		"  XXXX  ",
 		"  XXXX  ",
 		"  XXXX  ",
 		"        ",
 		"  XXXX  ",
 		"  XXXX  ",
+		"  XXXX  ",
+		"        ",
+		"        ",
+		"        ",
 	],
 }
 
