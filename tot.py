@@ -229,11 +229,13 @@ def clock_ticker():
 		first_row = font_big.ASCENDER + font_big.BASE - 1 # Zero-base addressing
 		second_row = first_row + font_small.ADVANCEMENT
 		third_row = first_row + font_small.ADVANCEMENT * 2
-		hrmin, sec = time.strftime("%H:%M %S").split()
+		fourth_row = first_row + font_small.ADVANCEMENT * 3
+		hrmin, sec, date = time.strftime("%H:%M!%S!%a %d %B %Y").split("!")
 		matrix_lcd.draw_text(0, first_row, hrmin, font=font_big)
 		matrix_lcd.draw_text(90, first_row, sec, font=font_large)
-		matrix_lcd.draw_text(0, second_row, line1)
-		matrix_lcd.draw_text(0, third_row, line2)
+		matrix_lcd.draw_text(0, second_row, date)
+		matrix_lcd.draw_text(0, third_row, line1)
+		matrix_lcd.draw_text(0, fourth_row, line2)
 		if anim_chevron_time:
 			refresh_time = min(refresh_time, 0.25) # 4FPS
 			frame = int((time.monotonic() - anim_chevron_time) / 0.025) # Frames since alarm animation started
