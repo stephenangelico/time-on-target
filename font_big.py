@@ -41,7 +41,7 @@ def _make_font(n, template):
 		FONT[ltr] = [row[i*n:i*n+n-1] for row in rows]
 # NOTE: Keep the digits all at max width, even if they don't all use it. This
 # keeps the display stable during ticking.
-_make_font(24, """0123456789
+_make_font(18, """0123456789
    XXXXXXXXX            XXX            XXXXXXXXX         XXXXXXXXX               XXX      XXXXXXXXXXXXXXX      XXXXXXXXX      XXXXXXXXXXXXXXX      XXXXXXXXX         XXXXXXXXX      
    XXXXXXXXX            XXX            XXXXXXXXX         XXXXXXXXX               XXX      XXXXXXXXXXXXXXX      XXXXXXXXX      XXXXXXXXXXXXXXX      XXXXXXXXX         XXXXXXXXX      
    XXXXXXXXX            XXX            XXXXXXXXX         XXXXXXXXX               XXX      XXXXXXXXXXXXXXX      XXXXXXXXX      XXXXXXXXXXXXXXX      XXXXXXXXX         XXXXXXXXX      
