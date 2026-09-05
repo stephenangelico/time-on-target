@@ -230,7 +230,8 @@ def clock_ticker():
 		# TODO: Use either font_large or font_big here - CHECK matrix_lcd.py
 		second_row = first_row + font_small.ADVANCEMENT
 		third_row = first_row + font_small.ADVANCEMENT * 2
-		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M:%S"), font=font_big)
+		matrix_lcd.draw_text(0, first_row, time.strftime("%H:%M"), font=font_big)
+		matrix_lcd.draw_text(90, first_row, time.strftime("%S"), font=font_large)
 		matrix_lcd.draw_text(0, second_row, line1)
 		matrix_lcd.draw_text(0, third_row, line2)
 		if anim_chevron_time:
