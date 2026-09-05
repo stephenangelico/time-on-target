@@ -10,7 +10,7 @@ LETTERSPACING = 3 # Pixels between characters horizontally
 
 FONT = {
 	" ": [" " * 18] * 21, # Critical - without this for unknown characters, everything will bomb
-	":": [ # TODO
+	":": [ # Looks better without the leading spaces - much more even between numbers
 		"      ",
 		"      ",
 		"      ",
